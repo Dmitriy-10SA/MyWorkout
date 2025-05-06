@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    //for Dagger 2
+    id("kotlin-kapt")
 }
 
 android {
@@ -37,6 +40,21 @@ android {
 }
 
 dependencies {
+    //domain
+    implementation(project(":domain"))
+
+    //data
+    implementation(project(":data"))
+
+    //design
+    implementation(project(":design"))
+
+    //Dagger 2
+    implementation(libs.dagger)
+    kapt(libs.dagger.compiler)
+
+    //Jetpack Compose Navigation
+    implementation(libs.androidx.navigation.compose)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

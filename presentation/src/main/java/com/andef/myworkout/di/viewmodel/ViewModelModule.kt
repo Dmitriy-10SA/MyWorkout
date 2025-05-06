@@ -1,4 +1,4 @@
-package com.andef.myworkout.di
+package com.andef.myworkout.di.viewmodel
 
 import dagger.Module
 

@@ -1,4 +1,4 @@
-package com.andef.myworkout.di
+package com.andef.myworkout.di.viewmodel
 
 import androidx.lifecycle.ViewModel
 import dagger.MapKey

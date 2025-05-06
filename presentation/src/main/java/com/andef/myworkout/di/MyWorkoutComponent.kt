@@ -1,7 +1,7 @@
 package com.andef.myworkout.di
 
 import android.app.Application
-import com.andef.myworkout.MainActivity
+import androidx.activity.ComponentActivity
 import com.andef.myworkout.di.account.AccountRepositoryModule
 import com.andef.myworkout.di.account.AccountServiceModule
 import com.andef.myworkout.di.auth.AuthRepositoryModule
@@ -36,7 +36,7 @@ import javax.inject.Singleton
     ]
 )
 interface MyWorkoutComponent {
-    fun inject(mainActivity: MainActivity)
+    fun inject(activity: ComponentActivity)
 
     @Component.Factory
     interface ComponentFactory {

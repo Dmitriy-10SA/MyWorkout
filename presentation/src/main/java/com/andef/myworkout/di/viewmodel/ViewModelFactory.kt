@@ -1,4 +1,4 @@
-package com.andef.myworkout
+package com.andef.myworkout.di.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
