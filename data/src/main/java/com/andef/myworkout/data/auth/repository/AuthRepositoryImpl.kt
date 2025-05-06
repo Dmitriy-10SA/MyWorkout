@@ -25,6 +25,7 @@ import javax.inject.Inject
  * @see AuthResponseMapper
  * @see RegisterRequestMapper
  * @see LoginRequestMapper
+ * @see ApiResponse
  */
 class AuthRepositoryImpl @Inject constructor(
     private val sharedPreferences: SharedPreferences,
