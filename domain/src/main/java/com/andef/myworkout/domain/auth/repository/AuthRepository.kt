@@ -3,7 +3,6 @@ package com.andef.myworkout.domain.auth.repository
 import com.andef.myworkout.domain.auth.entities.AuthResponse
 import com.andef.myworkout.domain.auth.entities.LoginRequest
 import com.andef.myworkout.domain.auth.entities.RegisterRequest
-import retrofit2.Response
 
 /**
  * @property register регистрация пользователя
@@ -17,9 +16,9 @@ import retrofit2.Response
  * @see LoginRequest
  */
 interface AuthRepository {
-    suspend fun register(registerRequest: RegisterRequest): Response<AuthResponse>
-    suspend fun checkToken(token: String): Response<Unit>
-    suspend fun login(loginRequest: LoginRequest): Response<AuthResponse>
-    fun getToken(): String
+    suspend fun register(registerRequest: RegisterRequest): AuthResponse
+    suspend fun checkToken(token: String)
+    suspend fun login(loginRequest: LoginRequest): AuthResponse
+    fun getToken(): String?
     fun clearToken()
 }

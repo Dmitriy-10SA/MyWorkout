@@ -1,0 +1,56 @@
+package com.andef.myworkout.data
+
+import android.util.Log
+import com.andef.myworkout.data.ApiException.BadRequest
+import com.andef.myworkout.data.ApiException.Forbidden
+import com.andef.myworkout.data.ApiException.NotFound
+import com.andef.myworkout.data.ApiException.NullableBodyError
+import com.andef.myworkout.data.ApiException.RequestTimeout
+import com.andef.myworkout.data.ApiException.ServerError
+import com.andef.myworkout.data.ApiException.Unauthorized
+import retrofit2.Response
+import javax.inject.Inject
+
+/**
+ * @property parseResponseWithNullableBody получение ответа или ошибки, учитывая, что тело != null
+ * @property parseResponseWithNullableBody получение ответа или ошибки, учитывая, что тело м.б null
+ * @property parseException получение ошибки по статус коду
+ * @property logAndThrowException логирование полученой ошибки и ее выбрасывание
+ *
+ * @see ApiException
+ */
+class ApiResponse @Inject constructor() {
+    fun <T> parseResponseWithNullableBody(response: Response<T>): T? {
+        return if (response.isSuccessful) {
+            response.body()
+        } else {
+            logAndThrowException(parseException(response))
+        }
+    }
+
+    fun <T> parseResponseWithoutNullableBody(response: Response<T>): T {
+        return if (response.isSuccessful) {
+            response.body() ?: logAndThrowException(NullableBodyError)
+        } else {
+            logAndThrowException(parseException(response))
+        }
+    }
+
+    private fun <T> parseException(response: Response<T>): ApiException {
+        return when (response.code()) {
+            400 -> BadRequest
+            401 -> Unauthorized
+            403 -> Forbidden
+            404 -> NotFound
+            408 -> RequestTimeout
+            else -> ServerError
+        }
+    }
+
+    private fun logAndThrowException(exception: ApiException): Nothing {
+        Log.d("ApiException", "----------------------------------------")
+        Log.d("ApiException", "${exception.message}")
+        Log.d("ApiException", "----------------------------------------")
+        throw exception
+    }
+}
