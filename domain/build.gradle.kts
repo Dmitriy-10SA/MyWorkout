@@ -19,6 +19,9 @@ dependencies {
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)
 
+    //Kotlin datetime
+    implementation(libs.kotlinx.datetime)
+
     //Retrofit
     implementation(libs.gson)
     implementation(libs.retrofit)
