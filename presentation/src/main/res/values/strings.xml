@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="calendar">Календарь</string>
+    <string name="calendar_description">Значок календаря</string>
+    <string name="exercises">Упражнения</string>
+    <string name="exercises_description">Значок упражнения</string>
+    <string name="account">Аккаунт</string>
+    <string name="account_description">Значок аккаунта</string>
+</resources>

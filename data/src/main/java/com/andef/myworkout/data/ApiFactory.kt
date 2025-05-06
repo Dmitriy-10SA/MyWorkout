@@ -1,5 +1,9 @@
 package com.andef.myworkout.data
 
+import com.andef.myworkout.data.ApiFactory.accountService
+import com.andef.myworkout.data.ApiFactory.authService
+import com.andef.myworkout.data.ApiFactory.exerciseService
+import com.andef.myworkout.data.ApiFactory.workoutService
 import com.andef.myworkout.data.account.api.AccountService
 import com.andef.myworkout.data.auth.api.AuthService
 import com.andef.myworkout.data.exercise.api.ExerciseService
