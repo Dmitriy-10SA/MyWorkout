@@ -1,7 +1,8 @@
 package com.andef.myworkout.data.auth.repository
 
 import android.content.SharedPreferences
-import com.andef.myworkout.data.ApiException
+import androidx.core.content.edit
+import com.andef.myworkout.data.ApiResponse
 import com.andef.myworkout.data.auth.api.AuthService
 import com.andef.myworkout.data.auth.mapper.AuthResponseMapper
 import com.andef.myworkout.data.auth.mapper.LoginRequestMapper
@@ -11,8 +12,6 @@ import com.andef.myworkout.domain.auth.entities.LoginRequest
 import com.andef.myworkout.domain.auth.entities.RegisterRequest
 import com.andef.myworkout.domain.auth.repository.AuthRepository
 import javax.inject.Inject
-import androidx.core.content.edit
-import com.andef.myworkout.data.ApiResponse
 
 /**
  * @property register регистрация пользователя
