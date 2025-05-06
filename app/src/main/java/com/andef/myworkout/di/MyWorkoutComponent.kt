@@ -6,6 +6,8 @@ import com.andef.myworkout.di.account.AccountServiceModule
 import com.andef.myworkout.di.auth.AuthRepositoryModule
 import com.andef.myworkout.di.auth.AuthServiceModule
 import com.andef.myworkout.di.auth.AuthSharedPreferencesModule
+import com.andef.myworkout.di.exercise.ExerciseRepositoryModule
+import com.andef.myworkout.di.exercise.ExerciseServiceModule
 import dagger.BindsInstance
 import dagger.Component
 
@@ -17,7 +19,10 @@ import dagger.Component
         AuthRepositoryModule::class,
         //Account
         AccountServiceModule::class,
-        AccountRepositoryModule::class
+        AccountRepositoryModule::class,
+        //Exercise
+        ExerciseServiceModule::class,
+        ExerciseRepositoryModule::class
     ]
 )
 interface MyWorkoutComponent {
