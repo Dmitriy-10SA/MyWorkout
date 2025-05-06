@@ -49,7 +49,7 @@ class AuthRepositoryImpl @Inject constructor(
         return authResponseMapper.map(apiResponse.parseResponseWithoutNullableBody(response))
     }
 
-    override fun getToken() = sharedPreferences.getString(TOKEN_PREF, null)
+    override fun getToken() = "Bearer ${sharedPreferences.getString(TOKEN_PREF, null)}"
 
     override fun clearToken() {
         sharedPreferences.edit { remove(TOKEN_PREF) }
