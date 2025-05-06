@@ -7,7 +7,15 @@ import androidx.activity.enableEdgeToEdge
 import com.andef.myworkout.ui.theme.MyWorkoutTheme
 
 class MainActivity : ComponentActivity() {
+//    @Inject
+//    lateinit var viewModelFactory: ViewModelFactory
+
+    private val component by lazy {
+        (application as MyWorkoutApplication).component
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        component.inject(this)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
