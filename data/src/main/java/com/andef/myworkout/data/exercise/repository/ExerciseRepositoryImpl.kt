@@ -61,7 +61,7 @@ class ExerciseRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addExercise(token: String, exerciseAddRequest: ExerciseAddRequest) {
-        apiResponse.parseResponseWithoutNullableBody(
+        apiResponse.parseResponseWithNullableBody(
             exerciseService.addExercise(token, exerciseAddRequestMapper.map(exerciseAddRequest))
         )
     }
@@ -72,13 +72,13 @@ class ExerciseRepositoryImpl @Inject constructor(
     }
 
     override suspend fun changeUserExercise(token: String, exercise: Exercise) {
-        apiResponse.parseResponseWithoutNullableBody(
+        apiResponse.parseResponseWithNullableBody(
             exerciseService.changeUserExercise(token, exerciseMapper.map(exercise))
         )
     }
 
     override suspend fun removeUserExercise(token: String, exerciseId: Long) {
-        apiResponse.parseResponseWithoutNullableBody(
+        apiResponse.parseResponseWithNullableBody(
             exerciseService.removeUserExercise(token, exerciseId)
         )
     }

@@ -34,6 +34,11 @@ class AccountRepositoryImpl @Inject constructor(
         token: String,
         changeUserInfoRequest: ChangeUserInfoRequest
     ) {
-        accountService.changeUserInfo(token, changeUserInfoRequestMapper.map(changeUserInfoRequest))
+        apiResponse.parseResponseWithNullableBody(
+            accountService.changeUserInfo(
+                token,
+                changeUserInfoRequestMapper.map(changeUserInfoRequest)
+            )
+        )
     }
 }
