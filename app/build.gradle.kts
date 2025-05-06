@@ -59,6 +59,9 @@ dependencies {
     //Jetpack Compose Navigation
     implementation(libs.androidx.navigation.compose)
 
+    //design
+    implementation(project(":design"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
