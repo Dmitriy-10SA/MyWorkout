@@ -6,9 +6,11 @@ import com.andef.myworkout.data.ApiResponse
 import com.andef.myworkout.data.auth.api.AuthService
 import com.andef.myworkout.data.auth.mapper.AuthResponseMapper
 import com.andef.myworkout.data.auth.mapper.LoginRequestMapper
+import com.andef.myworkout.data.auth.mapper.PasswordChangeRequestMapper
 import com.andef.myworkout.data.auth.mapper.RegisterRequestMapper
 import com.andef.myworkout.domain.auth.entities.AuthResponse
 import com.andef.myworkout.domain.auth.entities.LoginRequest
+import com.andef.myworkout.domain.auth.entities.PasswordChangeRequest
 import com.andef.myworkout.domain.auth.entities.RegisterRequest
 import com.andef.myworkout.domain.auth.repository.AuthRepository
 import javax.inject.Inject
@@ -33,7 +35,8 @@ class AuthRepositoryImpl @Inject constructor(
     private val apiResponse: ApiResponse,
     private val authResponseMapper: AuthResponseMapper,
     private val registerRequestMapper: RegisterRequestMapper,
-    private val loginRequestMapper: LoginRequestMapper
+    private val loginRequestMapper: LoginRequestMapper,
+    private val passwordChangeRequestMapper: PasswordChangeRequestMapper
 ) : AuthRepository {
     override suspend fun register(registerRequest: RegisterRequest): AuthResponse {
         val response = authService.register(registerRequestMapper.map(registerRequest))
@@ -46,6 +49,13 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun login(loginRequest: LoginRequest): AuthResponse {
         val response = authService.login(loginRequestMapper.map(loginRequest))
+        return authResponseMapper.map(apiResponse.parseResponseWithoutNullableBody(response))
+    }
+
+    override suspend fun changePassword(passwordChangeRequest: PasswordChangeRequest): AuthResponse {
+        val response = authService.changePassword(
+            passwordChangeRequestMapper.map(passwordChangeRequest)
+        )
         return authResponseMapper.map(apiResponse.parseResponseWithoutNullableBody(response))
     }
 
