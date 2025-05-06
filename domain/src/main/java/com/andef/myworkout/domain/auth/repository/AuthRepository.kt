@@ -2,6 +2,7 @@ package com.andef.myworkout.domain.auth.repository
 
 import com.andef.myworkout.domain.auth.entities.AuthResponse
 import com.andef.myworkout.domain.auth.entities.LoginRequest
+import com.andef.myworkout.domain.auth.entities.PasswordChangeRequest
 import com.andef.myworkout.domain.auth.entities.RegisterRequest
 
 /**
@@ -14,11 +15,13 @@ import com.andef.myworkout.domain.auth.entities.RegisterRequest
  * @see AuthResponse
  * @see RegisterRequest
  * @see LoginRequest
+ * @see PasswordChangeRequest
  */
 interface AuthRepository {
     suspend fun register(registerRequest: RegisterRequest): AuthResponse
     suspend fun checkToken(token: String)
     suspend fun login(loginRequest: LoginRequest): AuthResponse
+    suspend fun changePassword(passwordChangeRequest: PasswordChangeRequest): AuthResponse
     fun getToken(): String?
     fun clearToken()
 }
