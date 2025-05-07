@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="my_workout">MyWorkout</string>
     <string name="calendar">Календарь</string>
     <string name="calendar_description">Значок календаря</string>
     <string name="exercises">Упражнения</string>
     <string name="exercises_description">Значок упражнения</string>
     <string name="account">Аккаунт</string>
     <string name="account_description">Значок аккаунта</string>
+    <string name="login">Вход</string>
+    <string name="sign_up">Регистрация</string>
 </resources>

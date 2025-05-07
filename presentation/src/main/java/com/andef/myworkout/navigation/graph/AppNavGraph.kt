@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.andef.myworkout.navigation.Screen
+import com.andef.myworkout.presentation.auth.AuthScreen
 
 @Composable
 fun AppNavGraph(paddingValues: PaddingValues, navHostController: NavHostController) {
@@ -14,7 +15,7 @@ fun AppNavGraph(paddingValues: PaddingValues, navHostController: NavHostControll
         startDestination = Screen.AuthScreen.route
     ) {
         composable(route = Screen.AuthScreen.route) {
-
+            AuthScreen(paddingValues = paddingValues, navHostController = navHostController)
         }
         composable(route = Screen.AccountScreen.route) {
 
