@@ -34,7 +34,11 @@ sealed class ApiException(msg: String) : Exception(msg) {
         private fun readResolve(): Any = ServerError
     }
 
-    data object NullableBodyError : ApiException("Nullable Body Error") {
+    data object NullableBodyError : ApiException("NullableBodyError") {
         private fun readResolve(): Any = NullableBodyError
+    }
+
+    data object UnknownError : ApiException("UnknownError") {
+        private fun readResolve(): Any = UnknownError
     }
 }

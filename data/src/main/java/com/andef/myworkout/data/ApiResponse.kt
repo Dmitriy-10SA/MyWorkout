@@ -43,7 +43,8 @@ class ApiResponse @Inject constructor() {
             403 -> Forbidden
             404 -> NotFound
             408 -> RequestTimeout
-            else -> ServerError
+            500, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510, 511, 599 -> ServerError
+            else -> ApiException.UnknownError
         }
     }
 
