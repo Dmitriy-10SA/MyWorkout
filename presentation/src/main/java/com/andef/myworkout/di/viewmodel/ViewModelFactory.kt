@@ -2,9 +2,11 @@ package com.andef.myworkout.di.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.CreationExtras
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
+import kotlin.reflect.KClass
 
 @Singleton
 class ViewModelFactory @Inject constructor(

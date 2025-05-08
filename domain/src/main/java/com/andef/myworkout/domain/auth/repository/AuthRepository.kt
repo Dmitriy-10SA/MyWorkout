@@ -11,6 +11,7 @@ import com.andef.myworkout.domain.auth.entities.RegisterRequest
  * @property login логин пользователя
  * @property getToken получение последнего сохраненного токена пользователя (из SharedPreferences)
  * @property clearToken отчистка последнего сохраненного токена пользователя (из SharedPreferences)
+ * @property saveToken сохранение токена пользователя (в SharedPreferences)
  *
  * @see AuthResponse
  * @see RegisterRequest
@@ -22,6 +23,7 @@ interface AuthRepository {
     suspend fun checkToken(token: String)
     suspend fun login(loginRequest: LoginRequest): AuthResponse
     suspend fun changePassword(passwordChangeRequest: PasswordChangeRequest): AuthResponse
+    fun saveToken(token: String)
     fun getToken(): String?
     fun clearToken()
 }

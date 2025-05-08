@@ -1,4 +1,4 @@
-package com.andef.myworkout.ui.theme
+package com.andef.myworkout.design
 
 import androidx.compose.ui.graphics.Color
 

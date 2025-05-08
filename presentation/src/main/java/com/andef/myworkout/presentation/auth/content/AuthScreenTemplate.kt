@@ -1,11 +1,13 @@
-package com.andef.myworkout.presentation.auth
+package com.andef.myworkout.presentation.auth.content
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -19,29 +21,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.andef.myworkout.R
 import com.andef.myworkout.ui.theme.Black
-import com.andef.myworkout.ui.theme.MyWorkoutTheme
 import com.andef.myworkout.ui.theme.White
 
 @Composable
 fun AuthScreenTemplate(paddingValues: PaddingValues, mainContent: @Composable () -> Unit) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.horizontalGradient(
-                    colors = listOf(
-                        Color(0xFF111112),
-                        Color(0xFF414148)
-                    )
-                )
-            )
-            .padding(paddingValues)
-    ) {
+    Column(modifier = Modifier.authScreenTemplateModifier(paddingValues = paddingValues)) {
         Spacer(modifier = Modifier.padding(14.dp))
         Text(
             modifier = Modifier
@@ -66,10 +54,32 @@ fun AuthScreenTemplate(paddingValues: PaddingValues, mainContent: @Composable ()
     }
 }
 
-@Preview
 @Composable
-private fun AuthScreenTemplatePreview() {
-    MyWorkoutTheme {
-        AuthScreenTemplate(paddingValues = PaddingValues()) { }
+fun AuthScreenTemplate(paddingValues: PaddingValues) {
+    Column(
+        modifier = Modifier.authScreenTemplateModifier(paddingValues = paddingValues),
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
+            text = stringResource(R.string.my_workout),
+            textAlign = TextAlign.Center,
+            color = White,
+            fontFamily = FontFamily(Font(R.font.michroma_regular)),
+            fontSize = 32.sp
+        )
     }
+}
+
+@Composable
+private fun Modifier.authScreenTemplateModifier(paddingValues: PaddingValues): Modifier {
+    return this
+        .fillMaxSize()
+        .background(
+            brush = Brush.horizontalGradient(colors = listOf(Color(0xFF111112), Color(0xFF414148)))
+        )
+        .padding(paddingValues)
+        .imePadding()
 }
