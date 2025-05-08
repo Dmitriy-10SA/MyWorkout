@@ -10,7 +10,12 @@ sealed class AuthScreenIntent {
     data class PatronymicInput(val patronymic: String) : AuthScreenIntent()
     data object PasswordVisibleChange : AuthScreenIntent()
     data object ShowForgotPasswordVisibleChange : AuthScreenIntent()
-    data object Login : AuthScreenIntent()
-    data object PasswordChange : AuthScreenIntent()
-    data object SignUp : AuthScreenIntent()
+    data class Login(val onSuccess: () -> Unit, val onError: () -> Unit) : AuthScreenIntent()
+    data class PasswordChange(
+        val onSuccess: () -> Unit,
+        val onError: () -> Unit
+    ) : AuthScreenIntent()
+
+    data class SignUp(val onSuccess: () -> Unit, val onError: () -> Unit) : AuthScreenIntent()
+    data class CheckToken(val onSuccess: () -> Unit) : AuthScreenIntent()
 }

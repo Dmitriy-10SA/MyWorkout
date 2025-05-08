@@ -29,7 +29,9 @@ import com.andef.myworkout.ui.theme.White
 
 @Composable
 fun AuthScreenTemplate(paddingValues: PaddingValues, mainContent: @Composable () -> Unit) {
-    Column(modifier = Modifier.authScreenTemplateModifier(paddingValues = paddingValues)) {
+    Column(
+        modifier = Modifier.authScreenTemplateModifier(paddingValues = paddingValues)
+    ) {
         Spacer(modifier = Modifier.padding(14.dp))
         Text(
             modifier = Modifier

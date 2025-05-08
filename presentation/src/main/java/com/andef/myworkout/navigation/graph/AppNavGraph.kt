@@ -1,6 +1,7 @@
 package com.andef.myworkout.navigation.graph
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -13,7 +14,8 @@ import com.andef.myworkout.presentation.auth.main.AuthScreen
 fun AppNavGraph(
     paddingValues: PaddingValues,
     viewModelFactory: ViewModelFactory,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    snackBarHostState: SnackbarHostState
 ) {
     NavHost(
         navController = navHostController,
@@ -23,7 +25,8 @@ fun AppNavGraph(
             AuthScreen(
                 viewModelFactory = viewModelFactory,
                 paddingValues = paddingValues,
-                navHostController = navHostController
+                navHostController = navHostController,
+                snackBarHostState = snackBarHostState
             )
         }
         composable(route = Screen.AccountScreen.route) {

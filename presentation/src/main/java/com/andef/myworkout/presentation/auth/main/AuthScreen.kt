@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -11,6 +12,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -24,19 +26,26 @@ import com.andef.myworkout.presentation.auth.content.AuthScreenTemplate
 import com.andef.myworkout.presentation.auth.content.ForgotPasswordDialog
 import com.andef.myworkout.presentation.auth.content.LoginContent
 import com.andef.myworkout.presentation.auth.content.SignUpContent
+import com.andef.myworkout.ui.utils.navigateToMainScreen
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 
 @Composable
 fun AuthScreen(
     paddingValues: PaddingValues,
     viewModelFactory: ViewModelFactory,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    snackBarHostState: SnackbarHostState
 ) {
     val viewModel: AuthScreenViewModel = viewModel(factory = viewModelFactory)
     val state = viewModel.state.collectAsState()
 
-    var showEmptyAuthScreenTemplate = remember { mutableStateOf(false) }
-    var showForgotDialog = remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+
+    val showEmptyAuthScreenTemplate = remember { mutableStateOf(false) }
+    val showForgotDialog = remember { mutableStateOf(false) }
+
+    CheckTokenEffect(viewModel = viewModel, navHostController = navHostController)
 
     ShowForgotPasswordEffect(
         state = state,
@@ -50,18 +59,39 @@ fun AuthScreen(
             if (showForgotDialog.value) ForgotPasswordDialog(
                 viewModel = viewModel,
                 state = state,
-                paddingValues = paddingValues
+                snackBarHostState = snackBarHostState,
+                scope = scope,
+                navHostController = navHostController
             )
         }
 
         false -> {
             AuthScreenTemplate(paddingValues = paddingValues) {
-                AuthScreenContent(viewModel = viewModel, state = state)
+                AuthScreenContent(
+                    viewModel = viewModel,
+                    state = state,
+                    snackBarHostState = snackBarHostState,
+                    scope = scope,
+                    navHostController = navHostController
+                )
             }
         }
     }
     if (state.value.isLoading && !showForgotDialog.value) {
         UiLoadingOverlay(text = stringResource(R.string.my_workout), paddingValues = paddingValues)
+    }
+}
+
+@Composable
+private fun CheckTokenEffect(viewModel: AuthScreenViewModel, navHostController: NavHostController) {
+    LaunchedEffect(Unit) {
+        viewModel.send(
+            AuthScreenIntent.CheckToken(
+                onSuccess = {
+                    navigateToMainScreen(navHostController = navHostController)
+                }
+            )
+        )
     }
 }
 
@@ -85,7 +115,12 @@ private fun ShowForgotPasswordEffect(
 }
 
 @Composable
-private fun AuthScreenContent(viewModel: AuthScreenViewModel, state: State<AuthScreenState>) {
+private fun AuthScreenContent(
+    viewModel: AuthScreenViewModel, state: State<AuthScreenState>,
+    snackBarHostState: SnackbarHostState,
+    scope: CoroutineScope,
+    navHostController: NavHostController
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
@@ -102,8 +137,25 @@ private fun AuthScreenContent(viewModel: AuthScreenViewModel, state: State<AuthS
             )
         }
         when (state.value.isLogin) {
-            true -> item { LoginContent(viewModel = viewModel, state = state) }
-            false -> item { SignUpContent(viewModel = viewModel, state = state) }
+            true -> item {
+                LoginContent(
+                    viewModel = viewModel,
+                    state = state,
+                    snackBarHostState = snackBarHostState,
+                    scope = scope,
+                    navHostController = navHostController
+                )
+            }
+
+            false -> item {
+                SignUpContent(
+                    viewModel = viewModel,
+                    state = state,
+                    snackBarHostState = snackBarHostState,
+                    scope = scope,
+                    navHostController = navHostController
+                )
+            }
         }
     }
 }

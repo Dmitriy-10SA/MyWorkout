@@ -2,6 +2,17 @@ package com.andef.myworkout.presentation.auth.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.andef.myworkout.R
+import com.andef.myworkout.data.ApiException
+import com.andef.myworkout.domain.auth.entities.LoginRequest
+import com.andef.myworkout.domain.auth.entities.PasswordChangeRequest
+import com.andef.myworkout.domain.auth.entities.RegisterRequest
+import com.andef.myworkout.domain.auth.usecases.ChangePasswordUseCase
+import com.andef.myworkout.domain.auth.usecases.CheckTokenUseCase
+import com.andef.myworkout.domain.auth.usecases.GetTokenUseCase
+import com.andef.myworkout.domain.auth.usecases.LoginUseCase
+import com.andef.myworkout.domain.auth.usecases.RegisterUseCase
+import com.andef.myworkout.domain.auth.usecases.SaveTokenUseCase
 import com.andef.myworkout.ui.utils.isValidEmail
 import com.andef.myworkout.ui.utils.isValidPassword
 import kotlinx.coroutines.delay
@@ -10,7 +21,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class AuthScreenViewModel @Inject constructor() : ViewModel() {
+class AuthScreenViewModel @Inject constructor(
+    private val checkTokenUseCase: CheckTokenUseCase,
+    private val loginUseCase: LoginUseCase,
+    private val signUpUseCase: RegisterUseCase,
+    private val getTokenUseCase: GetTokenUseCase,
+    private val changePasswordUseCase: ChangePasswordUseCase,
+    private val saveTokenUseCase: SaveTokenUseCase
+) : ViewModel() {
     private val _state = MutableStateFlow(AuthScreenState())
     val state: StateFlow<AuthScreenState> = _state
 
@@ -25,33 +43,122 @@ class AuthScreenViewModel @Inject constructor() : ViewModel() {
             is AuthScreenIntent.PatronymicInput -> changeInput(patronymic = intent.patronymic)
             AuthScreenIntent.PasswordVisibleChange -> passwordVisibleChange()
             AuthScreenIntent.ShowForgotPasswordVisibleChange -> forgotPasswordVisibleChange()
-            AuthScreenIntent.Login -> login()
-            AuthScreenIntent.SignUp -> signUp()
-            AuthScreenIntent.PasswordChange -> passwordChange()
+            is AuthScreenIntent.Login -> login(
+                onSuccess = intent.onSuccess,
+                onError = intent.onError
+            )
+
+            is AuthScreenIntent.SignUp -> signUp(
+                onSuccess = intent.onSuccess,
+                onError = intent.onError
+            )
+
+            is AuthScreenIntent.PasswordChange -> passwordChange(
+                onSuccess = intent.onSuccess,
+                onError = intent.onError
+            )
+
+            is AuthScreenIntent.CheckToken -> checkToken(onSuccess = intent.onSuccess)
         }
     }
 
-    private fun login() {
-        viewModelScope.launch {
-            _state.value = _state.value.copy(isLoading = true)
-            delay(10000)
-            _state.value = _state.value.copy(isLoading = false)
-        }
+    private fun checkToken(onSuccess: () -> Unit) {
+        networkRequest(
+            request = {
+                getTokenUseCase.invoke()?.let { token ->
+                    delay(1000)
+                    checkTokenUseCase.invoke(token)
+                    onSuccess()
+                }
+            }
+        )
     }
 
-    private fun signUp() {
-        viewModelScope.launch {
-            _state.value = _state.value.copy(isLoading = true)
-            delay(2000)
-            _state.value = _state.value.copy(isLoading = false)
-        }
+    private fun login(onSuccess: () -> Unit, onError: () -> Unit) {
+        networkRequest(
+            request = {
+                val authResponse = loginUseCase.invoke(
+                    LoginRequest(mail = _state.value.email, password = _state.value.password)
+                )
+                saveTokenUseCase.invoke(authResponse.token)
+                onSuccess()
+            },
+            onError = onError,
+            unauthorizedTextResId = R.string.unauthorized_login_error,
+            serverErrorTextResId = R.string.server_error
+        )
     }
 
-    private fun passwordChange() {
+    private fun signUp(onSuccess: () -> Unit, onError: () -> Unit) {
+        networkRequest(
+            request = {
+                val authResponse = signUpUseCase.invoke(
+                    RegisterRequest(
+                        mail = _state.value.email,
+                        password = _state.value.password,
+                        surname = _state.value.surname,
+                        name = _state.value.name,
+                        patronymic = _state.value.patronymic
+                    )
+                )
+                saveTokenUseCase.invoke(authResponse.token)
+                onSuccess()
+            },
+            onError = onError,
+            unauthorizedTextResId = R.string.unauthorized_sign_up_error,
+            serverErrorTextResId = R.string.server_error
+        )
+    }
+
+    private fun passwordChange(onSuccess: () -> Unit, onError: () -> Unit) {
+        networkRequest(
+            request = {
+                val authResponse = changePasswordUseCase.invoke(
+                    PasswordChangeRequest(
+                        mail = _state.value.email,
+                        password = _state.value.password
+                    )
+                )
+                saveTokenUseCase.invoke(authResponse.token)
+                onSuccess()
+            },
+            onError = onError,
+            unauthorizedTextResId = R.string.unauthorized_change_password_error,
+            serverErrorTextResId = R.string.server_error
+        )
+    }
+
+    private fun networkRequest(
+        request: suspend () -> Unit,
+        onError: () -> Unit = {},
+        unauthorizedTextResId: Int = R.string.unknown_error,
+        serverErrorTextResId: Int = R.string.unknown_error
+    ) {
         viewModelScope.launch {
-            _state.value = _state.value.copy(isLoading = true)
-            delay(2000)
-            _state.value = _state.value.copy(isLoading = false)
+            try {
+                _state.value = _state.value.copy(
+                    isLoading = true,
+                    isError = false,
+                    errorMsgResId = null
+                )
+                request()
+            } catch (e: ApiException) {
+                val errorMsgResId = when (e) {
+                    ApiException.Unauthorized -> unauthorizedTextResId
+                    ApiException.ServerError -> serverErrorTextResId
+                    else -> R.string.unknown_network_error
+                }
+                _state.value = _state.value.copy(isError = true, errorMsgResId = errorMsgResId)
+                onError()
+            } catch (_: Exception) {
+                _state.value = _state.value.copy(
+                    isError = true,
+                    errorMsgResId = R.string.unknown_network_error
+                )
+                onError()
+            } finally {
+                _state.value = _state.value.copy(isLoading = false)
+            }
         }
     }
 
