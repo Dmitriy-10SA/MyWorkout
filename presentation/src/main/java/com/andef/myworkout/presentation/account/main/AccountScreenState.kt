@@ -9,6 +9,7 @@ data class AccountScreenState(
     val patronymic: String = "",
     val photo: String? = null,
     val isValidInfoForChange: Boolean = false,
+    val showEditInfoDialog: Boolean = false,
     val isLoading: Boolean = false,
     val isError: Boolean = false
 )

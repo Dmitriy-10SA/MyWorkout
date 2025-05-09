@@ -63,7 +63,15 @@ class AccountScreenViewModel @Inject constructor(
             is AccountScreenIntent.Logout -> {
                 logout(onLogout = intent.onLogout)
             }
+
+            AccountScreenIntent.ChangeEditInfoDialogVisible -> {
+                editInfoDialogVisibleChange()
+            }
         }
+    }
+
+    private fun editInfoDialogVisibleChange() {
+        _state.value = _state.value.copy(showEditInfoDialog = !_state.value.showEditInfoDialog)
     }
 
     private fun logout(onLogout: () -> Unit) {

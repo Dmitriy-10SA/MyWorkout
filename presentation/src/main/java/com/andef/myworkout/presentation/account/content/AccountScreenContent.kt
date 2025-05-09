@@ -11,6 +11,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.andef.myworkout.R
+import com.andef.myworkout.design.dialog.ui.UiDialog
 import com.andef.myworkout.design.fab.state.UiFABState
 import com.andef.myworkout.design.fab.ui.UiFAB
 import com.andef.myworkout.design.iconbutton.ui.UiIconButton
@@ -33,32 +34,20 @@ fun AccountScreenContent(
     paddingValues: PaddingValues,
     navHostController: NavHostController
 ) {
+    if (state.value.showEditInfoDialog) {
+        UiDialog(
+            text = {
+
+            },
+            dismiss = { viewModel.send(AccountScreenIntent.ChangeEditInfoDialogVisible) }
+        )
+    }
     UiScaffold(
         topBar = {
-            UiTopBar(
-                title = stringResource(R.string.account),
-                actions = {
-                    UiIconButton(
-                        painter = painterResource(R.drawable.logout),
-                        contentDescription = stringResource(R.string.logout)
-                    ) {
-                        viewModel.send(AccountScreenIntent.Logout(onLogout = {
-                            onUnauthorizedNavigate(navHostController = navHostController)
-                        }))
-                    }
-                }
-            )
+            TopBarContent(viewModel = viewModel, navHostController = navHostController)
         },
         floatingActionButton = {
-            UiFAB(
-                modifier = Modifier
-                    .padding(bottom = paddingValues.calculateBottomPadding()),
-                painter = painterResource(R.drawable.edit),
-                contentDescription = stringResource(R.string.edit_account_info),
-                state = UiFABState.Base
-            ) {
-                TODO()
-            }
+            FABContent(viewModel = viewModel, paddingValues = paddingValues)
         },
         snackBarHost = {
             UiSnackBarHost(
@@ -67,24 +56,69 @@ fun AccountScreenContent(
             )
         }
     ) { topPadding ->
-        state.value.userInfo?.let { userInfo ->
-            UserInfoContent(
-                paddingValues = PaddingValues(
-                    bottom = paddingValues.calculateBottomPadding(),
-                    top = topPadding.calculateTopPadding()
-                ),
-                userInfo = userInfo
-            )
-        }
-
-        if (showLoading.value) {
-            UiLoadingOverlay(
-                text = stringResource(R.string.my_workout),
-                paddingValues = PaddingValues(
-                    bottom = paddingValues.calculateBottomPadding(),
-                    top = topPadding.calculateTopPadding()
-                )
-            )
-        }
+        Content(
+            state = state,
+            showLoading = showLoading,
+            topPadding = topPadding,
+            paddingValues = paddingValues
+        )
     }
+}
+
+@Composable
+private fun Content(
+    state: State<AccountScreenState>,
+    paddingValues: PaddingValues,
+    topPadding: PaddingValues,
+    showLoading: State<Boolean>
+) {
+    state.value.userInfo?.let { userInfo ->
+        UserInfoContent(
+            paddingValues = PaddingValues(
+                bottom = paddingValues.calculateBottomPadding(),
+                top = topPadding.calculateTopPadding()
+            ),
+            userInfo = userInfo
+        )
+    }
+
+    if (showLoading.value) {
+        UiLoadingOverlay(
+            text = stringResource(R.string.my_workout),
+            paddingValues = PaddingValues(
+                bottom = paddingValues.calculateBottomPadding(),
+                top = topPadding.calculateTopPadding()
+            )
+        )
+    }
+}
+
+@Composable
+private fun FABContent(viewModel: AccountScreenViewModel, paddingValues: PaddingValues) {
+    UiFAB(
+        modifier = Modifier
+            .padding(bottom = paddingValues.calculateBottomPadding()),
+        painter = painterResource(R.drawable.edit),
+        contentDescription = stringResource(R.string.edit_account_info),
+        state = UiFABState.Base
+    ) {
+        viewModel.send(AccountScreenIntent.ChangeEditInfoDialogVisible)
+    }
+}
+
+@Composable
+private fun TopBarContent(viewModel: AccountScreenViewModel, navHostController: NavHostController) {
+    UiTopBar(
+        title = stringResource(R.string.account),
+        actions = {
+            UiIconButton(
+                painter = painterResource(R.drawable.logout),
+                contentDescription = stringResource(R.string.logout)
+            ) {
+                viewModel.send(AccountScreenIntent.Logout(onLogout = {
+                    onUnauthorizedNavigate(navHostController = navHostController)
+                }))
+            }
+        }
+    )
 }
