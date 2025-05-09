@@ -20,7 +20,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.andef.myworkout.R
 import com.andef.myworkout.design.chooser.ui.UiChooser
-import com.andef.myworkout.design.loading.UiLoadingOverlay
+import com.andef.myworkout.design.loading.ui.UiLoadingOverlay
 import com.andef.myworkout.design.scaffold.ui.UiScaffold
 import com.andef.myworkout.design.snackbar.state.UiSnackBarState
 import com.andef.myworkout.design.snackbar.ui.UiSnackBarHost

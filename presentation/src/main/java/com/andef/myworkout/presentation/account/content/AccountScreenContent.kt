@@ -1,5 +1,7 @@
 package com.andef.myworkout.presentation.account.content
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,12 +25,13 @@ import com.andef.myworkout.R
 import com.andef.myworkout.design.button.state.UiButtonState
 import com.andef.myworkout.design.button.ui.UiButton
 import com.andef.myworkout.design.dialog.ui.UiDialog
+import com.andef.myworkout.design.error.ui.UiErrorOverlay
 import com.andef.myworkout.design.fab.state.UiFABState
 import com.andef.myworkout.design.fab.ui.UiFAB
 import com.andef.myworkout.design.iconbutton.ui.UiIconButton
 import com.andef.myworkout.design.input.state.UiInputState
 import com.andef.myworkout.design.input.ui.UiInput
-import com.andef.myworkout.design.loading.UiLoadingOverlay
+import com.andef.myworkout.design.loading.ui.UiLoadingOverlay
 import com.andef.myworkout.design.scaffold.ui.UiScaffold
 import com.andef.myworkout.design.snackbar.state.UiSnackBarState
 import com.andef.myworkout.design.snackbar.ui.UiSnackBarHost
@@ -37,6 +40,10 @@ import com.andef.myworkout.presentation.account.main.AccountScreenIntent
 import com.andef.myworkout.presentation.account.main.AccountScreenState
 import com.andef.myworkout.presentation.account.main.AccountScreenViewModel
 import com.andef.myworkout.ui.utils.onUnauthorizedNavigate
+import com.andef.myworkout.ui.utils.slideInDown
+import com.andef.myworkout.ui.utils.slideInUp
+import com.andef.myworkout.ui.utils.slideOutDown
+import com.andef.myworkout.ui.utils.slideOutUp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -69,7 +76,12 @@ fun AccountScreenContent(
             TopBarContent(viewModel = viewModel, navHostController = navHostController)
         },
         floatingActionButton = {
-            FABContent(viewModel = viewModel, paddingValues = paddingValues)
+            AnimatedContent(
+                targetState = !state.value.isError,
+                transitionSpec = { slideInUp.togetherWith(slideOutDown) }
+            ) { state ->
+                if (state) FABContent(viewModel = viewModel, paddingValues = paddingValues)
+            }
         },
         snackBarHost = {
             UiSnackBarHost(
@@ -82,7 +94,11 @@ fun AccountScreenContent(
             state = state,
             showLoading = showLoading,
             topPadding = topPadding,
-            paddingValues = paddingValues
+            paddingValues = paddingValues,
+            viewModel = viewModel,
+            navHostController = navHostController,
+            scope = scope,
+            snackBarHostState = snackBarHostState
         )
     }
 }
@@ -92,8 +108,14 @@ private fun Content(
     state: State<AccountScreenState>,
     paddingValues: PaddingValues,
     topPadding: PaddingValues,
+    viewModel: AccountScreenViewModel,
+    scope: CoroutineScope,
+    navHostController: NavHostController,
+    snackBarHostState: SnackbarHostState,
     showLoading: State<Boolean>
 ) {
+    val context = LocalContext.current
+
     state.value.userInfo?.let { userInfo ->
         UserInfoContent(
             paddingValues = PaddingValues(
@@ -111,6 +133,29 @@ private fun Content(
                 bottom = paddingValues.calculateBottomPadding(),
                 top = topPadding.calculateTopPadding()
             )
+        )
+    } else if (state.value.isError) {
+        UiErrorOverlay(
+            paddingValues = PaddingValues(
+                bottom = paddingValues.calculateBottomPadding(),
+                top = topPadding.calculateTopPadding()
+            ),
+            onRetry = {
+                viewModel.send(
+                    AccountScreenIntent.LoadUserInfo(
+                        onUnauthorized = {
+                            scope.launch {
+                                snackBarHostState.currentSnackbarData?.dismiss()
+                                snackBarHostState.showSnackbar(
+                                    message = context.getString(R.string.unauthorized),
+                                    withDismissAction = true
+                                )
+                                onUnauthorizedNavigate(navHostController = navHostController)
+                            }
+                        }
+                    )
+                )
+            }
         )
     }
 }

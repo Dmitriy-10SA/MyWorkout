@@ -1,4 +1,4 @@
-package com.andef.myworkout.design.loading
+package com.andef.myworkout.design.loading.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
