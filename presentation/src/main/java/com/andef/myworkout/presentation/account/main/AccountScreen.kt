@@ -48,7 +48,9 @@ fun AccountScreen(
         snackBarHostState = snackBarHostState,
         showLoading = showLoading,
         state = state,
-        paddingValues = paddingValues
+        paddingValues = paddingValues,
+        viewModel = viewModel,
+        navHostController = navHostController
     )
 }
 

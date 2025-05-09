@@ -24,30 +24,51 @@ class AccountScreenViewModel @Inject constructor(
 
     fun send(intent: AccountScreenIntent) {
         when (intent) {
-            is AccountScreenIntent.ChangeUserInfo -> changeUserInfo(
-                onUnauthorized = intent.onUnauthorized
-            )
+            is AccountScreenIntent.ChangeUserInfo -> {
+                changeUserInfo(
+                    onUnauthorized = intent.onUnauthorized
+                )
+            }
 
-            is AccountScreenIntent.LoadUserInfo -> loadUserInfo(
-                onUnauthorized = intent.onUnauthorized
-            )
+            is AccountScreenIntent.LoadUserInfo -> {
+                loadUserInfo(
+                    onUnauthorized = intent.onUnauthorized
+                )
+            }
 
-            is AccountScreenIntent.NameInput -> changeInput(
-                name = intent.name
-            )
+            is AccountScreenIntent.NameInput -> {
+                changeInput(
+                    name = intent.name
+                )
+            }
 
-            is AccountScreenIntent.PatronymicInput -> changeInput(
-                patronymic = intent.patronymic
-            )
+            is AccountScreenIntent.PatronymicInput -> {
+                changeInput(
+                    patronymic = intent.patronymic
+                )
+            }
 
-            is AccountScreenIntent.PhotoInput -> changeInput(
-                photo = intent.photo
-            )
+            is AccountScreenIntent.PhotoInput -> {
+                changeInput(
+                    photo = intent.photo
+                )
+            }
 
-            is AccountScreenIntent.SurnameInput -> changeInput(
-                surname = intent.surname
-            )
+            is AccountScreenIntent.SurnameInput -> {
+                changeInput(
+                    surname = intent.surname
+                )
+            }
+
+            is AccountScreenIntent.Logout -> {
+                logout(onLogout = intent.onLogout)
+            }
         }
+    }
+
+    private fun logout(onLogout: () -> Unit) {
+        clearTokenUseCase.invoke()
+        onLogout()
     }
 
     private fun changeInput(

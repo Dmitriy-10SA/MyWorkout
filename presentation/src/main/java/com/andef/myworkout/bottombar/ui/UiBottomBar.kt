@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -92,7 +93,7 @@ private fun RowScope.NavigationBarItemContent(
                 tint = Black
             )
         },
-        label = { Text(text = stringResource(item.titleResId), color = Black) },
+        label = { Text(text = stringResource(item.titleResId), color = Black, fontSize = 13.sp) },
         selected = currentDestination?.route == item.route,
         onClick = {
             navHostController.navigate(item.route) {

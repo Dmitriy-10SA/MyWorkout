@@ -7,4 +7,5 @@ sealed class AccountScreenIntent {
     data class NameInput(val name: String) : AccountScreenIntent()
     data class PatronymicInput(val patronymic: String) : AccountScreenIntent()
     data class PhotoInput(val photo: String) : AccountScreenIntent()
+    data class Logout(val onLogout: () -> Unit) : AccountScreenIntent()
 }

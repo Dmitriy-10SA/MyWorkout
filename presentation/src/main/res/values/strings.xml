@@ -6,6 +6,11 @@
     <string name="exercises">Упражнения</string>
     <string name="exercises_description">Значок упражнения</string>
     <string name="account">Аккаунт</string>
+    <string name="logout">Выйти из аккаунта</string>
+    <string name="logout_dialog">Выйти из аккаунта?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="account_photo">Фото аккаунта</string>
     <string name="account_description">Значок аккаунта</string>
     <string name="login">Войти</string>
     <string name="login_button">Вход</string>
