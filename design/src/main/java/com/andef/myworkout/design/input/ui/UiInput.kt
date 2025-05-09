@@ -12,7 +12,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.andef.myworkout.design.Black
 import com.andef.myworkout.design.DarkGray
-import com.andef.myworkout.design.Gray
 import com.andef.myworkout.design.White
 import com.andef.myworkout.design.input.state.UiInputState
 
