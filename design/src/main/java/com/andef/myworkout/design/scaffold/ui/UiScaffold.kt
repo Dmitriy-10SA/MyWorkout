@@ -11,6 +11,7 @@ fun UiScaffold(
     topBar: @Composable () -> Unit = {},
     bottomBar: @Composable () -> Unit = {},
     snackBarHost: @Composable () -> Unit = {},
+    floatingActionButton: @Composable () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit
 ) {
     Scaffold(
@@ -18,7 +19,8 @@ fun UiScaffold(
         contentColor = Black,
         topBar = topBar,
         bottomBar = bottomBar,
-        snackbarHost = snackBarHost
+        snackbarHost = snackBarHost,
+        floatingActionButton = floatingActionButton
     ) {
         content(it)
     }

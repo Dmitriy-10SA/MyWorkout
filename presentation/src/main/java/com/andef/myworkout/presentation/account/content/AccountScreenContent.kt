@@ -1,14 +1,18 @@
 package com.andef.myworkout.presentation.account.content
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.andef.myworkout.R
+import com.andef.myworkout.design.fab.state.UiFABState
+import com.andef.myworkout.design.fab.ui.UiFAB
 import com.andef.myworkout.design.iconbutton.ui.UiIconButton
 import com.andef.myworkout.design.loading.UiLoadingOverlay
 import com.andef.myworkout.design.scaffold.ui.UiScaffold
@@ -44,6 +48,17 @@ fun AccountScreenContent(
                     }
                 }
             )
+        },
+        floatingActionButton = {
+            UiFAB(
+                modifier = Modifier
+                    .padding(bottom = paddingValues.calculateBottomPadding()),
+                painter = painterResource(R.drawable.edit),
+                contentDescription = stringResource(R.string.edit_account_info),
+                state = UiFABState.Base
+            ) {
+                TODO()
+            }
         },
         snackBarHost = {
             UiSnackBarHost(
