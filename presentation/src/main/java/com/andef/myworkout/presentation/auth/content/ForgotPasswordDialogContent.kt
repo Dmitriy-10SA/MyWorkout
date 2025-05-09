@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -113,6 +114,7 @@ private fun DialogButtons(
     navHostController: NavHostController
 ) {
     val context = LocalContext.current
+    val keyboardOptions = LocalSoftwareKeyboardController.current
 
     Row {
         UiButton(
@@ -137,6 +139,7 @@ private fun DialogButtons(
             ),
             text = stringResource(R.string.ok),
             onClick = {
+                keyboardOptions?.hide()
                 viewModel.send(
                     AuthScreenIntent.PasswordChange(
                         onSuccess = {
