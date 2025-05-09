@@ -37,6 +37,8 @@ class ApiResponse @Inject constructor() {
     }
 
     private fun <T> parseException(response: Response<T>): ApiException {
+        Log.d("okhttp.OkHttpClient", "----------------------------------------")
+        Log.d("okhttp.OkHttpClient", "$response")
         return when (response.code()) {
             400 -> BadRequest
             401 -> Unauthorized
@@ -49,9 +51,8 @@ class ApiResponse @Inject constructor() {
     }
 
     private fun logAndThrowException(exception: ApiException): Nothing {
-        Log.d("ApiException", "----------------------------------------")
-        Log.d("ApiException", "${exception.message}")
-        Log.d("ApiException", "----------------------------------------")
+        Log.d("okhttp.OkHttpClient", "${exception.message}")
+        Log.d("okhttp.OkHttpClient", "----------------------------------------")
         throw exception
     }
 }

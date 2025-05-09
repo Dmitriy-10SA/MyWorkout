@@ -43,6 +43,9 @@ dependencies {
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)
 
+    //HTTP logging interceptor
+    implementation(libs.logging.interceptor)
+
     //Kotlin datetime
     implementation(libs.kotlinx.datetime)
 

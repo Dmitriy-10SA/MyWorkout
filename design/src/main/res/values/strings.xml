@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_error_overlay_text">Ошибка при запросе</string>
+    <string name="ui_error_overlay_retry_button_text">Попробовать еще раз</string>
+    <string name="ui_error_overlay_my_workout">MyWorkout</string>
+</resources>

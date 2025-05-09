@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.andef.myworkout.design.snackbar.state.UiSnackBarState
 
 @Composable
-fun UiSnackBar(snackBarHostState: SnackbarHostState, state: UiSnackBarState) {
+fun UiSnackBarHost(snackBarHostState: SnackbarHostState, state: UiSnackBarState) {
     val containerColor = when (state) {
         UiSnackBarState.Error -> Color(0xFFD2082B)
         UiSnackBarState.Usual -> Color(0xFF1565C0)

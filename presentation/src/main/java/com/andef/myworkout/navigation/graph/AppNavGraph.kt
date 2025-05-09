@@ -1,21 +1,20 @@
 package com.andef.myworkout.navigation.graph
 
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.andef.myworkout.di.viewmodel.ViewModelFactory
 import com.andef.myworkout.navigation.Screen
+import com.andef.myworkout.presentation.account.main.AccountScreen
 import com.andef.myworkout.presentation.auth.main.AuthScreen
 
 @Composable
 fun AppNavGraph(
     paddingValues: PaddingValues,
     viewModelFactory: ViewModelFactory,
-    navHostController: NavHostController,
-    snackBarHostState: SnackbarHostState
+    navHostController: NavHostController
 ) {
     NavHost(
         navController = navHostController,
@@ -25,14 +24,17 @@ fun AppNavGraph(
             AuthScreen(
                 viewModelFactory = viewModelFactory,
                 paddingValues = paddingValues,
-                navHostController = navHostController,
-                snackBarHostState = snackBarHostState
+                navHostController = navHostController
             )
         }
-        composable(route = Screen.AccountScreen.route) {
-
-        }
-        exerciseNavGraph(paddingValues = paddingValues, navHostController = navHostController)
         calendarNavGraph(paddingValues = paddingValues, navHostController = navHostController)
+        exerciseNavGraph(paddingValues = paddingValues, navHostController = navHostController)
+        composable(route = Screen.AccountScreen.route) {
+            AccountScreen(
+                viewModelFactory = viewModelFactory,
+                paddingValues = paddingValues,
+                navHostController = navHostController
+            )
+        }
     }
 }

@@ -20,7 +20,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.andef.myworkout.R
 import com.andef.myworkout.design.chooser.ui.UiChooser
-import com.andef.myworkout.design.loading.UiLoadingOverlay
+import com.andef.myworkout.design.loading.ui.UiLoadingOverlay
+import com.andef.myworkout.design.scaffold.ui.UiScaffold
+import com.andef.myworkout.design.snackbar.state.UiSnackBarState
+import com.andef.myworkout.design.snackbar.ui.UiSnackBarHost
 import com.andef.myworkout.di.viewmodel.ViewModelFactory
 import com.andef.myworkout.presentation.auth.content.AuthScreenTemplate
 import com.andef.myworkout.presentation.auth.content.ForgotPasswordDialog
@@ -34,13 +37,13 @@ import kotlinx.coroutines.delay
 fun AuthScreen(
     paddingValues: PaddingValues,
     viewModelFactory: ViewModelFactory,
-    navHostController: NavHostController,
-    snackBarHostState: SnackbarHostState
+    navHostController: NavHostController
 ) {
     val viewModel: AuthScreenViewModel = viewModel(factory = viewModelFactory)
     val state = viewModel.state.collectAsState()
 
     val scope = rememberCoroutineScope()
+    val snackBarHostState = remember { SnackbarHostState() }
 
     val showEmptyAuthScreenTemplate = remember { mutableStateOf(false) }
     val showForgotDialog = remember { mutableStateOf(false) }
@@ -53,21 +56,18 @@ fun AuthScreen(
         showForgotDialog = showForgotDialog
     )
 
-    when (showEmptyAuthScreenTemplate.value) {
-        true -> {
-            AuthScreenTemplate(paddingValues = paddingValues)
-            if (showForgotDialog.value) ForgotPasswordDialog(
-                viewModel = viewModel,
-                state = state,
+    UiScaffold(
+        snackBarHost = {
+            UiSnackBarHost(
                 snackBarHostState = snackBarHostState,
-                scope = scope,
-                navHostController = navHostController
+                state = UiSnackBarState.Error
             )
         }
-
-        false -> {
-            AuthScreenTemplate(paddingValues = paddingValues) {
-                AuthScreenContent(
+    ) {
+        when (showEmptyAuthScreenTemplate.value) {
+            true -> {
+                AuthScreenTemplate(paddingValues = paddingValues)
+                if (showForgotDialog.value) ForgotPasswordDialog(
                     viewModel = viewModel,
                     state = state,
                     snackBarHostState = snackBarHostState,
@@ -75,10 +75,25 @@ fun AuthScreen(
                     navHostController = navHostController
                 )
             }
+
+            false -> {
+                AuthScreenTemplate(paddingValues = paddingValues) {
+                    AuthScreenContent(
+                        viewModel = viewModel,
+                        state = state,
+                        snackBarHostState = snackBarHostState,
+                        scope = scope,
+                        navHostController = navHostController
+                    )
+                }
+            }
         }
-    }
-    if (state.value.isLoading && !showForgotDialog.value) {
-        UiLoadingOverlay(text = stringResource(R.string.my_workout), paddingValues = paddingValues)
+        if (state.value.isLoading && !showForgotDialog.value) {
+            UiLoadingOverlay(
+                text = stringResource(R.string.my_workout),
+                paddingValues = paddingValues
+            )
+        }
     }
 }
 
@@ -124,7 +139,7 @@ private fun AuthScreenContent(
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(top = 16.dp, start = 16.dp, end = 16.dp, bottom = 1.dp)
     ) {
         item {
             UiChooser(

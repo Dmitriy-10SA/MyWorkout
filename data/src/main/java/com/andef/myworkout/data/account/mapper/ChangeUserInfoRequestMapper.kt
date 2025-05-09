@@ -15,6 +15,6 @@ class ChangeUserInfoRequestMapper @Inject constructor() {
         surname = changeUserInfoRequest.surname,
         name = changeUserInfoRequest.name,
         patronymic = changeUserInfoRequest.patronymic,
-        photo = changeUserInfoRequest.photo
+        photo = changeUserInfoRequest.photo ?: ""
     )
 }

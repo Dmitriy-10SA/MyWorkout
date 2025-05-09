@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -63,6 +64,7 @@ private fun Buttons(
     navHostController: NavHostController
 ) {
     val context = LocalContext.current
+    val keyboardOptions = LocalSoftwareKeyboardController.current
 
     UiButton(
         state = UiButtonState.ForgotPassword,
@@ -78,6 +80,7 @@ private fun Buttons(
         ),
         text = stringResource(R.string.login_button),
         onClick = {
+            keyboardOptions?.hide()
             viewModel.send(
                 AuthScreenIntent.Login(
                     onSuccess = {

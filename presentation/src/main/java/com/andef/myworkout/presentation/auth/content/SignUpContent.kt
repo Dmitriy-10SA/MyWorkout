@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -118,6 +119,7 @@ private fun SignUpButton(
     navHostController: NavHostController
 ) {
     val context = LocalContext.current
+    val keyboardOptions = LocalSoftwareKeyboardController.current
 
     UiButton(
         state = UiButtonState.Base(
@@ -127,6 +129,7 @@ private fun SignUpButton(
         ),
         text = stringResource(R.string.sign_up_button),
         onClick = {
+            keyboardOptions?.hide()
             viewModel.send(
                 AuthScreenIntent.SignUp(
                     onSuccess = {
