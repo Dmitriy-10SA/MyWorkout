@@ -2,6 +2,7 @@ package com.andef.myworkout.bottombar.ui
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -54,9 +55,14 @@ private fun NavigationBarContent(
         modifier = Modifier
             .shadow(
                 elevation = 8.dp,
-                shape = RoundedCornerShape(topEnd = 24.dp, topStart = 24.dp),
+                shape = RoundedCornerShape(topEnd = 28.dp, topStart = 28.dp),
                 ambientColor = Black,
                 spotColor = Black
+            )
+            .border(
+                width = 1.dp,
+                color = Black.copy(alpha = 0.05f),
+                shape = RoundedCornerShape(topEnd = 28.dp, topStart = 28.dp)
             ),
         containerColor = White,
         contentColor = Black

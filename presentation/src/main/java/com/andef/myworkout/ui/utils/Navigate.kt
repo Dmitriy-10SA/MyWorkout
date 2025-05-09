@@ -8,3 +8,9 @@ fun navigateToMainScreen(navHostController: NavHostController) {
         popUpTo(0)
     }
 }
+
+fun onUnauthorizedNavigate(navHostController: NavHostController) {
+    navHostController.navigate(Screen.AuthScreen.route) {
+        popUpTo(0)
+    }
+}

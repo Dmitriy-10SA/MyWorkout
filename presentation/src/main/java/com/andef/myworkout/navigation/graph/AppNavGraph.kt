@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.andef.myworkout.di.viewmodel.ViewModelFactory
 import com.andef.myworkout.navigation.Screen
+import com.andef.myworkout.presentation.account.main.AccountScreen
 import com.andef.myworkout.presentation.auth.main.AuthScreen
 
 @Composable
@@ -29,7 +30,11 @@ fun AppNavGraph(
         calendarNavGraph(paddingValues = paddingValues, navHostController = navHostController)
         exerciseNavGraph(paddingValues = paddingValues, navHostController = navHostController)
         composable(route = Screen.AccountScreen.route) {
-
+            AccountScreen(
+                viewModelFactory = viewModelFactory,
+                paddingValues = paddingValues,
+                navHostController = navHostController
+            )
         }
     }
 }
