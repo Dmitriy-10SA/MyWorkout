@@ -8,7 +8,6 @@ import com.andef.myworkout.domain.account.usecases.ChangeUserInfoUseCase
 import com.andef.myworkout.domain.account.usecases.GetUserInfoUseCase
 import com.andef.myworkout.domain.auth.usecases.ClearTokenUseCase
 import com.andef.myworkout.domain.auth.usecases.GetTokenUseCase
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

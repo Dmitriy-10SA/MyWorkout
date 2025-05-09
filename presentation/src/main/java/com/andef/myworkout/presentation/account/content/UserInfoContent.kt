@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -26,12 +27,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.andef.myworkout.R
 import com.andef.myworkout.domain.account.entities.UserInfo
+import com.andef.myworkout.presentation.account.main.AccountScreenIntent
+import com.andef.myworkout.presentation.account.main.AccountScreenViewModel
 import com.andef.myworkout.ui.theme.Black
 import com.andef.myworkout.ui.theme.Gray
-import java.io.ByteArrayOutputStream
 
 @Composable
-fun UserInfoContent(paddingValues: PaddingValues, userInfo: UserInfo) {
+fun UserInfoContent(
+    paddingValues: PaddingValues,
+    userInfo: UserInfo,
+    viewModel: AccountScreenViewModel
+) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -43,26 +49,27 @@ fun UserInfoContent(paddingValues: PaddingValues, userInfo: UserInfo) {
             Spacer(modifier = Modifier.padding(8.dp))
             if (userInfo.photo != null && !userInfo.photo.isNullOrEmpty()) {
                 userInfo.photo?.let {
-                    Image(
-                        bitmap = base64ToBitmap(it).asImageBitmap(),
-                        modifier = Modifier
-                            .size(130.dp)
-                            .clip(CircleShape),
-                        contentDescription = stringResource(R.string.account_photo)
-                    )
+                    val bitmap = base64ToBitmap(base64 = it)
+                    if (bitmap.allocationByteCount < 10 * 1024 * 1024) {
+                        Image(
+                            bitmap = bitmap.asImageBitmap(),
+                            modifier = Modifier
+                                .size(150.dp)
+                                .clip(CircleShape)
+                                .background(Black),
+                            contentDescription = stringResource(R.string.account_photo)
+                        )
+                    } else {
+                        viewModel.send(AccountScreenIntent.PhotoInput(photo = ""))
+                        AccountSamplePhoto()
+                    }
                 }
             } else {
-                Image(
-                    painter = painterResource(R.drawable.account),
-                    modifier = Modifier
-                        .size(130.dp)
-                        .clip(CircleShape),
-                    colorFilter = ColorFilter.tint(color = Gray),
-                    contentDescription = stringResource(R.string.account_photo)
-                )
+                AccountSamplePhoto()
             }
         }
         item {
+            Spacer(modifier = Modifier.padding(5.dp))
             Text(
                 text = getFullUserName(userInfo),
                 color = Black,
@@ -77,11 +84,16 @@ fun UserInfoContent(paddingValues: PaddingValues, userInfo: UserInfo) {
     }
 }
 
-private fun bitmapToBase64(bitmap: Bitmap): String {
-    val byteArrayOutputStream = ByteArrayOutputStream()
-    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream)
-    val byteArray = byteArrayOutputStream.toByteArray()
-    return Base64.encodeToString(byteArray, Base64.DEFAULT)
+@Composable
+private fun AccountSamplePhoto() {
+    Image(
+        painter = painterResource(R.drawable.account),
+        modifier = Modifier
+            .size(150.dp)
+            .clip(CircleShape),
+        colorFilter = ColorFilter.tint(color = Gray),
+        contentDescription = stringResource(R.string.account_photo)
+    )
 }
 
 private fun base64ToBitmap(base64: String): Bitmap {

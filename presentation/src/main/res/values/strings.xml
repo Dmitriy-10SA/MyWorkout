@@ -40,6 +40,8 @@
     <string name="change_user_info">Сохранить</string>
     <string name="ok">Ок</string>
     <string name="cancel">Отмена</string>
+    <string name="photo_choose">Выбрать фото</string>
     <string name="unknown_error">Неизвестная ошибка</string>
     <string name="unauthorized">Ошибка авторизации</string>
+    <string name="large_file_more_10_mb">Файл слишком большой (максимум 10 МБ)</string>
 </resources>

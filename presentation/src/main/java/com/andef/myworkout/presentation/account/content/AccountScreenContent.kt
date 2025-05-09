@@ -1,5 +1,15 @@
 package com.andef.myworkout.presentation.account.content
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
+import android.util.Base64
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.PaddingValues
@@ -40,12 +50,11 @@ import com.andef.myworkout.presentation.account.main.AccountScreenIntent
 import com.andef.myworkout.presentation.account.main.AccountScreenState
 import com.andef.myworkout.presentation.account.main.AccountScreenViewModel
 import com.andef.myworkout.ui.utils.onUnauthorizedNavigate
-import com.andef.myworkout.ui.utils.slideInDown
 import com.andef.myworkout.ui.utils.slideInUp
 import com.andef.myworkout.ui.utils.slideOutDown
-import com.andef.myworkout.ui.utils.slideOutUp
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
 
 @Composable
 fun AccountScreenContent(
@@ -122,7 +131,8 @@ private fun Content(
                 bottom = paddingValues.calculateBottomPadding(),
                 top = topPadding.calculateTopPadding()
             ),
-            userInfo = userInfo
+            userInfo = userInfo,
+            viewModel = viewModel
         )
     }
 
@@ -170,6 +180,36 @@ private fun ChangeInfoDialogContent(
 ) {
     val context = LocalContext.current
 
+    val pickImageLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri ->
+            uri?.let { imageUri ->
+                try {
+                    val size = getUriFileSize(context, uri)
+                    if (size > 10 * 1024 * 1024) {
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.large_file_more_10_mb),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@let
+                    }
+                    val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        val source = ImageDecoder.createSource(context.contentResolver, imageUri)
+                        ImageDecoder.decodeBitmap(source)
+                    } else {
+                        @Suppress("DEPRECATION")
+                        MediaStore.Images.Media.getBitmap(context.contentResolver, imageUri)
+                    }
+                    val base64String = bitmapToBase64(bitmap)
+                    viewModel.send(AccountScreenIntent.PhotoInput(photo = base64String))
+                } catch (_: Exception) {
+                    viewModel.send(AccountScreenIntent.PhotoInput(photo = ""))
+                }
+            }
+        }
+    )
+
     LazyColumn {
         item {
             SurnameInput(viewModel = viewModel, state = state)
@@ -177,6 +217,18 @@ private fun ChangeInfoDialogContent(
             NameInput(viewModel = viewModel, state = state)
             Spacer(modifier = Modifier.padding(3.dp))
             PatronymicInput(viewModel = viewModel, state = state)
+            Spacer(modifier = Modifier.padding(4.dp))
+            Row {
+                UiButton(
+                    state = UiButtonState.Chooser(
+                        modifier = Modifier.weight(1f),
+                        textModifier = Modifier.padding(vertical = 4.dp)
+                    ),
+                    text = stringResource(R.string.photo_choose)
+                ) {
+                    pickImageLauncher.launch("image/*")
+                }
+            }
             Spacer(modifier = Modifier.padding(4.dp))
             Row {
                 UiButton(
@@ -219,6 +271,12 @@ private fun ChangeInfoDialogContent(
             }
         }
     }
+}
+
+private fun getUriFileSize(context: Context, uri: Uri): Long {
+    return context.contentResolver.openFileDescriptor(uri, "r")?.use { pfd ->
+        pfd.statSize
+    } ?: 0L
 }
 
 @Composable
@@ -297,4 +355,11 @@ private fun PatronymicInput(viewModel: AccountScreenViewModel, state: State<Acco
         placeholderText = stringResource(R.string.patronymic_hint),
         upText = stringResource(R.string.patronymic)
     )
+}
+
+private fun bitmapToBase64(bitmap: Bitmap): String {
+    val byteArrayOutputStream = ByteArrayOutputStream()
+    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream)
+    val byteArray = byteArrayOutputStream.toByteArray()
+    return Base64.encodeToString(byteArray, Base64.DEFAULT)
 }

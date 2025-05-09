@@ -9,5 +9,10 @@ sealed class UiButtonState {
         val enabled: Boolean = true
     ) : UiButtonState()
 
+    data class Chooser(
+        val modifier: Modifier = Modifier,
+        val textModifier: Modifier = Modifier,
+        val enabled: Boolean = true
+    ) : UiButtonState()
     data object ForgotPassword : UiButtonState()
 }
