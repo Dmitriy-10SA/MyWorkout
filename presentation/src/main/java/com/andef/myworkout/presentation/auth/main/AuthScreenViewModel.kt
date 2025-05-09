@@ -171,7 +171,8 @@ class AuthScreenViewModel @Inject constructor(
     ) {
         val isValidEmailAndPassword = email.isValidEmail() && password.isValidPassword()
         val isValidRegisterRequestInfo = isValidEmailAndPassword && surname.isNotEmpty() &&
-                name.isNotEmpty() && patronymic.isNotEmpty()
+                name.isNotEmpty() && patronymic.isNotEmpty() && surname.length < 45 &&
+                name.length < 40 && patronymic.length < 45
 
         _state.value = _state.value.copy(
             email = email,

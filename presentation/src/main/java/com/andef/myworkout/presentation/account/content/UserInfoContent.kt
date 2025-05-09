@@ -41,18 +41,26 @@ fun UserInfoContent(paddingValues: PaddingValues, userInfo: UserInfo) {
     ) {
         item {
             Spacer(modifier = Modifier.padding(8.dp))
-            userInfo.photo?.let {
+            if (userInfo.photo != null && !userInfo.photo.isNullOrEmpty()) {
+                userInfo.photo?.let {
+                    Image(
+                        bitmap = base64ToBitmap(it).asImageBitmap(),
+                        modifier = Modifier
+                            .size(130.dp)
+                            .clip(CircleShape),
+                        contentDescription = stringResource(R.string.account_photo)
+                    )
+                }
+            } else {
                 Image(
-                    bitmap = base64ToBitmap(it).asImageBitmap(),
-                    modifier = Modifier.size(130.dp).clip(CircleShape),
+                    painter = painterResource(R.drawable.account),
+                    modifier = Modifier
+                        .size(130.dp)
+                        .clip(CircleShape),
+                    colorFilter = ColorFilter.tint(color = Gray),
                     contentDescription = stringResource(R.string.account_photo)
                 )
-            } ?: Image(
-                painter = painterResource(R.drawable.account),
-                modifier = Modifier.size(130.dp).clip(CircleShape),
-                colorFilter = ColorFilter.tint(color = Gray),
-                contentDescription = stringResource(R.string.account_photo)
-            )
+            }
         }
         item {
             Text(

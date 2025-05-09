@@ -50,7 +50,8 @@ fun AccountScreen(
         state = state,
         paddingValues = paddingValues,
         viewModel = viewModel,
-        navHostController = navHostController
+        navHostController = navHostController,
+        scope = scope
     )
 }
 

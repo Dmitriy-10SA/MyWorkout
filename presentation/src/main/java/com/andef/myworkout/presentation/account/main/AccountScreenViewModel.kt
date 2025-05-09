@@ -38,13 +38,13 @@ class AccountScreenViewModel @Inject constructor(
 
             is AccountScreenIntent.NameInput -> {
                 changeInput(
-                    name = intent.name
+                    name = intent.name.trim()
                 )
             }
 
             is AccountScreenIntent.PatronymicInput -> {
                 changeInput(
-                    patronymic = intent.patronymic
+                    patronymic = intent.patronymic.trim()
                 )
             }
 
@@ -56,7 +56,7 @@ class AccountScreenViewModel @Inject constructor(
 
             is AccountScreenIntent.SurnameInput -> {
                 changeInput(
-                    surname = intent.surname
+                    surname = intent.surname.trim()
                 )
             }
 
@@ -99,7 +99,8 @@ class AccountScreenViewModel @Inject constructor(
         name: String,
         patronymic: String
     ): Boolean {
-        return surname.isNotEmpty() && name.isNotEmpty() && patronymic.isNotEmpty()
+        return surname.isNotEmpty() && name.isNotEmpty() && patronymic.isNotEmpty() &&
+                surname.length < 45 && name.length < 40 && patronymic.length < 45
     }
 
     private fun changeUserInfo(onUnauthorized: () -> Unit) {
@@ -114,6 +115,7 @@ class AccountScreenViewModel @Inject constructor(
                         photo = _state.value.photo
                     )
                 )
+                loadUserInfo(onUnauthorized = onUnauthorized)
             },
             onUnauthorized = onUnauthorized
         )
@@ -128,7 +130,12 @@ class AccountScreenViewModel @Inject constructor(
                     surname = userInfo.surname,
                     name = userInfo.name,
                     patronymic = userInfo.patronymic,
-                    photo = userInfo.photo
+                    photo = userInfo.photo,
+                    isValidInfoForChange = checkValidInfoForChange(
+                        userInfo.surname,
+                        userInfo.name,
+                        userInfo.patronymic
+                    )
                 )
             },
             onUnauthorized = onUnauthorized
