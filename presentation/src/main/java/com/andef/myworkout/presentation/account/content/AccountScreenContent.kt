@@ -210,8 +210,7 @@ private fun ChangeInfoDialogContent(
                             }
                         }
                     } else {
-                        @Suppress("DEPRECATION")
-                        decodeAndResizeBitmap(context, imageUri, 1024, 1024)
+                        decodeAndResizeBitmap(context, imageUri)
                     } ?: run {
                         Toast.makeText(
                             context,
@@ -292,12 +291,7 @@ private fun ChangeInfoDialogContent(
     }
 }
 
-private fun decodeAndResizeBitmap(
-    context: Context,
-    uri: Uri,
-    maxWidth: Int,
-    maxHeight: Int
-): Bitmap? {
+private fun decodeAndResizeBitmap(context: Context, uri: Uri): Bitmap? {
     return try {
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
@@ -305,7 +299,7 @@ private fun decodeAndResizeBitmap(
             BitmapFactory.decodeStream(stream, null, options)
         }
 
-        options.inSampleSize = calculateInSampleSize(options, maxWidth, maxHeight)
+        options.inSampleSize = calculateInSampleSize(options)
         options.inJustDecodeBounds = false
 
         context.contentResolver.openInputStream(uri)?.use { stream ->
@@ -316,18 +310,14 @@ private fun decodeAndResizeBitmap(
     }
 }
 
-private fun calculateInSampleSize(
-    options: BitmapFactory.Options,
-    reqWidth: Int,
-    reqHeight: Int
-): Int {
+private fun calculateInSampleSize(options: BitmapFactory.Options): Int {
     val (height, width) = options.run { outHeight to outWidth }
     var inSampleSize = 1
 
-    if (height > reqHeight || width > reqWidth) {
+    if (height > 1024 || width > 1024) {
         val halfHeight = height / 2
         val halfWidth = width / 2
-        while (halfHeight / inSampleSize >= reqHeight && halfWidth / inSampleSize >= reqWidth) {
+        while (halfHeight / inSampleSize >= 1024 && halfWidth / inSampleSize >= 1024) {
             inSampleSize *= 2
         }
     }
