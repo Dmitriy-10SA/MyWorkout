@@ -1,8 +1,12 @@
 package com.andef.myworkout.presentation.auth.main
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -59,32 +63,37 @@ fun AuthScreen(
     UiScaffold(
         snackBarHost = {
             UiSnackBarHost(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(WindowInsets.statusBars.asPaddingValues()),
                 snackBarHostState = snackBarHostState,
                 state = UiSnackBarState.Error
             )
         }
     ) {
-        when (showEmptyAuthScreenTemplate.value) {
-            true -> {
-                AuthScreenTemplate(paddingValues = paddingValues)
-                if (showForgotDialog.value) ForgotPasswordDialog(
-                    viewModel = viewModel,
-                    state = state,
-                    snackBarHostState = snackBarHostState,
-                    scope = scope,
-                    navHostController = navHostController
-                )
-            }
-
-            false -> {
-                AuthScreenTemplate(paddingValues = paddingValues) {
-                    AuthScreenContent(
+        if (!state.value.isCheckTokenLoading && !state.value.isSwitchToMainScreen) {
+            when (showEmptyAuthScreenTemplate.value) {
+                true -> {
+                    AuthScreenTemplate(paddingValues = paddingValues)
+                    if (showForgotDialog.value) ForgotPasswordDialog(
                         viewModel = viewModel,
                         state = state,
                         snackBarHostState = snackBarHostState,
                         scope = scope,
                         navHostController = navHostController
                     )
+                }
+
+                false -> {
+                    AuthScreenTemplate(paddingValues = paddingValues) {
+                        AuthScreenContent(
+                            viewModel = viewModel,
+                            state = state,
+                            snackBarHostState = snackBarHostState,
+                            scope = scope,
+                            navHostController = navHostController
+                        )
+                    }
                 }
             }
         }

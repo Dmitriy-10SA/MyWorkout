@@ -2,9 +2,11 @@ package com.andef.myworkout.design.snackbar.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,7 +21,11 @@ import androidx.compose.ui.unit.dp
 import com.andef.myworkout.design.snackbar.state.UiSnackBarState
 
 @Composable
-fun UiSnackBarHost(snackBarHostState: SnackbarHostState, state: UiSnackBarState) {
+fun UiSnackBarHost(
+    modifier: Modifier,
+    snackBarHostState: SnackbarHostState,
+    state: UiSnackBarState
+) {
     val containerColor = when (state) {
         UiSnackBarState.Error -> Color(0xFFD2082B)
         UiSnackBarState.Usual -> Color(0xFF1565C0)
@@ -27,9 +33,7 @@ fun UiSnackBarHost(snackBarHostState: SnackbarHostState, state: UiSnackBarState)
 
     SnackbarHost(hostState = snackBarHostState) { data ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(WindowInsets.statusBars.asPaddingValues()),
+            modifier = modifier,
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

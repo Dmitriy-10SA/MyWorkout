@@ -68,9 +68,11 @@ class AuthScreenViewModel @Inject constructor(
                 getTokenUseCase.invoke()?.let { token ->
                     delay(1000)
                     checkTokenUseCase.invoke(token)
+                    _state.value = _state.value.copy(isSwitchToMainScreen = true)
                     onSuccess()
                 }
-            }
+            },
+            isCheckToken = true
         )
     }
 
@@ -132,7 +134,8 @@ class AuthScreenViewModel @Inject constructor(
         request: suspend () -> Unit,
         onError: () -> Unit = {},
         unauthorizedTextResId: Int = R.string.unknown_error,
-        serverErrorTextResId: Int = R.string.unknown_error
+        serverErrorTextResId: Int = R.string.unknown_error,
+        isCheckToken: Boolean = false
     ) {
         viewModelScope.launch {
             try {
@@ -141,12 +144,18 @@ class AuthScreenViewModel @Inject constructor(
                     isError = false,
                     errorMsgResId = null
                 )
+                if (isCheckToken) {
+                    _state.value = _state.value.copy(isCheckTokenLoading = true)
+                }
                 request()
             } catch (e: ApiException) {
                 val errorMsgResId = when (e) {
                     ApiException.Unauthorized -> unauthorizedTextResId
                     ApiException.ServerError -> serverErrorTextResId
                     else -> R.string.unknown_network_error
+                }
+                if (isCheckToken) {
+                    _state.value = _state.value.copy(isCheckTokenLoading = false)
                 }
                 _state.value = _state.value.copy(isError = true, errorMsgResId = errorMsgResId)
                 onError()
@@ -155,9 +164,15 @@ class AuthScreenViewModel @Inject constructor(
                     isError = true,
                     errorMsgResId = R.string.unknown_network_error
                 )
+                if (isCheckToken) {
+                    _state.value = _state.value.copy(isCheckTokenLoading = false)
+                }
                 onError()
             } finally {
                 _state.value = _state.value.copy(isLoading = false)
+                if (isCheckToken) {
+                    _state.value = _state.value.copy(isCheckTokenLoading = false)
+                }
             }
         }
     }

@@ -12,6 +12,7 @@
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="account_photo">Фото аккаунта</string>
+    <string name="error_account_photo_load">Ошибка! Попробуйте другое фото!</string>
     <string name="account_description">Значок аккаунта</string>
     <string name="login">Войти</string>
     <string name="login_button">Вход</string>
@@ -43,5 +44,5 @@
     <string name="photo_choose">Выбрать фото</string>
     <string name="unknown_error">Неизвестная ошибка</string>
     <string name="unauthorized">Ошибка авторизации</string>
-    <string name="large_file_more_10_mb">Файл слишком большой (максимум 10 МБ)</string>
+    <string name="large_file_more_15_mb">Файл слишком большой (максимум 15 МБ)!</string>
 </resources>
