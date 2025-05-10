@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.andef.myworkout.presentation.account.main.AccountScreenViewModel
 import com.andef.myworkout.presentation.auth.main.AuthScreenViewModel
 import com.andef.myworkout.presentation.calendar.main.CalendarScreenViewModel
+import com.andef.myworkout.presentation.exercises.main.ExercisesScreenViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -24,4 +25,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(CalendarScreenViewModel::class)
     fun bindCalendarScreenViewModel(impl: CalendarScreenViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ExercisesScreenViewModel::class)
+    fun bindExercisesScreenViewModel(impl: ExercisesScreenViewModel): ViewModel
 }

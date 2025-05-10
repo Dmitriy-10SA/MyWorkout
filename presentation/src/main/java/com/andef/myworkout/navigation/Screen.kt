@@ -19,6 +19,11 @@ sealed class Screen(val route: String) {
      */
     data object ExercisesScreen : Screen(EXERCISES_SCREEN_ROUTE) {
         data object MainScreen : Screen(EXERCISES_MAIN_SCREEN_ROUTE)
+        data object AddOrChangeScreen : Screen("$EXERCISES_ADD_OR_CHANGE_SCREEN_ROUTE/{$IS_ADD}") {
+            fun passParams(isAdd: Boolean): String {
+                return "$EXERCISES_ADD_OR_CHANGE_SCREEN_ROUTE/$isAdd"
+            }
+        }
     }
 
     /**
@@ -35,8 +40,11 @@ sealed class Screen(val route: String) {
 
         private const val EXERCISES_SCREEN_ROUTE = "exercises"
         private const val EXERCISES_MAIN_SCREEN_ROUTE = "exercises_main"
+        private const val EXERCISES_ADD_OR_CHANGE_SCREEN_ROUTE = "exercises_add_or_change"
 
         private const val CALENDAR_SCREEN_ROUTE = "calendar"
         private const val CALENDAR_MAIN_SCREEN_ROUTE = "calendar_main"
+
+        const val IS_ADD = "is_add"
     }
 }

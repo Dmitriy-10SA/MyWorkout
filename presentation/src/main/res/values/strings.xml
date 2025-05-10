@@ -8,6 +8,7 @@
     <string name="account">Аккаунт</string>
     <string name="edit_account_info">Изменение данных аккаунта</string>
     <string name="add_workout">Добавить тренировку</string>
+    <string name="add_exercise">Добавить упражнение</string>
     <string name="logout">Выйти из аккаунта</string>
     <string name="logout_dialog">Выйти из аккаунта?</string>
     <string name="yes">Да</string>
