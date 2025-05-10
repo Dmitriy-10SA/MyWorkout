@@ -83,6 +83,7 @@ class AuthScreenViewModel @Inject constructor(
                     LoginRequest(mail = _state.value.email, password = _state.value.password)
                 )
                 saveTokenUseCase.invoke(authResponse.token)
+                _state.value = _state.value.copy(isSwitchToMainScreen = true)
                 onSuccess()
             },
             onError = onError,
@@ -104,6 +105,7 @@ class AuthScreenViewModel @Inject constructor(
                     )
                 )
                 saveTokenUseCase.invoke(authResponse.token)
+                _state.value = _state.value.copy(isSwitchToMainScreen = true)
                 onSuccess()
             },
             onError = onError,
@@ -122,6 +124,7 @@ class AuthScreenViewModel @Inject constructor(
                     )
                 )
                 saveTokenUseCase.invoke(authResponse.token)
+                _state.value = _state.value.copy(isSwitchToMainScreen = true)
                 onSuccess()
             },
             onError = onError,
