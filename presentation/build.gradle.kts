@@ -49,6 +49,9 @@ dependencies {
     //design
     implementation(project(":design"))
 
+    //Custom Calendar
+    implementation(libs.compose)
+
     //Dagger 2
     implementation(libs.dagger)
     kapt(libs.dagger.compiler)

@@ -1,4 +1,4 @@
-package com.andef.myworkout.bottombar.ui
+package com.andef.myworkout.navigation.bottombar.ui
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.togetherWith
@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.andef.myworkout.bottombar.items.UiBottomBarItem
+import com.andef.myworkout.navigation.bottombar.items.UiBottomBarItem
 import com.andef.myworkout.navigation.Screen
 import com.andef.myworkout.ui.theme.Black
 import com.andef.myworkout.ui.theme.White

@@ -27,8 +27,16 @@ fun AppNavGraph(
                 navHostController = navHostController
             )
         }
-        calendarNavGraph(paddingValues = paddingValues, navHostController = navHostController)
-        exerciseNavGraph(paddingValues = paddingValues, navHostController = navHostController)
+        calendarNavGraph(
+            paddingValues = paddingValues,
+            navHostController = navHostController,
+            viewModelFactory = viewModelFactory
+        )
+        exerciseNavGraph(
+            paddingValues = paddingValues,
+            navHostController = navHostController,
+            viewModelFactory = viewModelFactory
+        )
         composable(route = Screen.AccountScreen.route) {
             AccountScreen(
                 viewModelFactory = viewModelFactory,

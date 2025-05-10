@@ -6,10 +6,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import com.andef.myworkout.di.viewmodel.ViewModelFactory
 import com.andef.myworkout.navigation.Screen
 
 fun NavGraphBuilder.exerciseNavGraph(
     paddingValues: PaddingValues,
+    viewModelFactory: ViewModelFactory,
     navHostController: NavHostController
 ) {
     navigation(
