@@ -2,10 +2,10 @@ package com.andef.myworkout.presentation.account.content
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
-import android.provider.MediaStore
 import android.util.Base64
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -15,13 +15,13 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -55,12 +55,12 @@ import com.andef.myworkout.ui.utils.slideOutDown
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+import kotlin.math.min
 
 @Composable
 fun AccountScreenContent(
     viewModel: AccountScreenViewModel,
     snackBarHostState: SnackbarHostState,
-    showLoading: MutableState<Boolean>,
     state: State<AccountScreenState>,
     paddingValues: PaddingValues,
     navHostController: NavHostController,
@@ -91,17 +91,17 @@ fun AccountScreenContent(
             ) { state ->
                 if (state) FABContent(viewModel = viewModel, paddingValues = paddingValues)
             }
-        },
-        snackBarHost = {
-            UiSnackBarHost(
-                snackBarHostState = snackBarHostState,
-                state = UiSnackBarState.Error
-            )
         }
     ) { topPadding ->
+        UiSnackBarHost(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = topPadding.calculateTopPadding()),
+            snackBarHostState = snackBarHostState,
+            state = UiSnackBarState.Error
+        )
         Content(
             state = state,
-            showLoading = showLoading,
             topPadding = topPadding,
             paddingValues = paddingValues,
             viewModel = viewModel,
@@ -120,8 +120,7 @@ private fun Content(
     viewModel: AccountScreenViewModel,
     scope: CoroutineScope,
     navHostController: NavHostController,
-    snackBarHostState: SnackbarHostState,
-    showLoading: State<Boolean>
+    snackBarHostState: SnackbarHostState
 ) {
     val context = LocalContext.current
 
@@ -132,11 +131,14 @@ private fun Content(
                 top = topPadding.calculateTopPadding()
             ),
             userInfo = userInfo,
-            viewModel = viewModel
+            viewModel = viewModel,
+            scope = scope,
+            navHostController = navHostController,
+            snackBarHostState = snackBarHostState
         )
     }
 
-    if (showLoading.value) {
+    if (state.value.isLoading) {
         UiLoadingOverlay(
             text = stringResource(R.string.my_workout),
             paddingValues = PaddingValues(
@@ -186,20 +188,36 @@ private fun ChangeInfoDialogContent(
             uri?.let { imageUri ->
                 try {
                     val size = getUriFileSize(context, uri)
-                    if (size > 10 * 1024 * 1024) {
+                    if (size > 15 * 1024 * 1024) {
                         Toast.makeText(
                             context,
-                            context.getString(R.string.large_file_more_10_mb),
+                            context.getString(R.string.large_file_more_15_mb),
                             Toast.LENGTH_SHORT
                         ).show()
                         return@let
                     }
                     val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                         val source = ImageDecoder.createSource(context.contentResolver, imageUri)
-                        ImageDecoder.decodeBitmap(source)
+                        ImageDecoder.decodeBitmap(source) { decoder, info, _ ->
+                            val width = info.size.width
+                            val height = info.size.height
+                            if (width > 1024 || height > 1024) {
+                                val scale = min(1024f / width, 1024f / height)
+                                decoder.setTargetSize(
+                                    (width * scale).toInt(),
+                                    (height * scale).toInt()
+                                )
+                            }
+                        }
                     } else {
-                        @Suppress("DEPRECATION")
-                        MediaStore.Images.Media.getBitmap(context.contentResolver, imageUri)
+                        decodeAndResizeBitmap(context, imageUri)
+                    } ?: run {
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.error_account_photo_load),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        return@let
                     }
                     val base64String = bitmapToBase64(bitmap)
                     viewModel.send(AccountScreenIntent.PhotoInput(photo = base64String))
@@ -271,6 +289,39 @@ private fun ChangeInfoDialogContent(
             }
         }
     }
+}
+
+private fun decodeAndResizeBitmap(context: Context, uri: Uri): Bitmap? {
+    return try {
+        val options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+        context.contentResolver.openInputStream(uri)?.use { stream ->
+            BitmapFactory.decodeStream(stream, null, options)
+        }
+
+        options.inSampleSize = calculateInSampleSize(options)
+        options.inJustDecodeBounds = false
+
+        context.contentResolver.openInputStream(uri)?.use { stream ->
+            BitmapFactory.decodeStream(stream, null, options)
+        }
+    } catch (_: Exception) {
+        null
+    }
+}
+
+private fun calculateInSampleSize(options: BitmapFactory.Options): Int {
+    val (height, width) = options.run { outHeight to outWidth }
+    var inSampleSize = 1
+
+    if (height > 1024 || width > 1024) {
+        val halfHeight = height / 2
+        val halfWidth = width / 2
+        while (halfHeight / inSampleSize >= 1024 && halfWidth / inSampleSize >= 1024) {
+            inSampleSize *= 2
+        }
+    }
+    return inSampleSize
 }
 
 private fun getUriFileSize(context: Context, uri: Uri): Long {
@@ -359,7 +410,14 @@ private fun PatronymicInput(viewModel: AccountScreenViewModel, state: State<Acco
 
 private fun bitmapToBase64(bitmap: Bitmap): String {
     val byteArrayOutputStream = ByteArrayOutputStream()
-    bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream)
-    val byteArray = byteArrayOutputStream.toByteArray()
-    return Base64.encodeToString(byteArray, Base64.DEFAULT)
+    var quality = 80
+    bitmap.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream)
+
+    while (byteArrayOutputStream.size() > 5 * 1024 * 1024 && quality > 30) {
+        byteArrayOutputStream.reset()
+        quality -= 10
+        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream)
+    }
+
+    return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
 }
