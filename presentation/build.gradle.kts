@@ -59,6 +59,9 @@ dependencies {
     //Jetpack Compose Navigation
     implementation(libs.androidx.navigation.compose)
 
+    //Kotlin datetime
+    implementation(libs.kotlinx.datetime)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

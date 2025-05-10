@@ -22,6 +22,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -60,6 +61,7 @@ import kotlin.math.min
 @Composable
 fun AccountScreenContent(
     viewModel: AccountScreenViewModel,
+    showLoading: MutableState<Boolean>,
     snackBarHostState: SnackbarHostState,
     state: State<AccountScreenState>,
     paddingValues: PaddingValues,
@@ -107,7 +109,8 @@ fun AccountScreenContent(
             viewModel = viewModel,
             navHostController = navHostController,
             scope = scope,
-            snackBarHostState = snackBarHostState
+            snackBarHostState = snackBarHostState,
+            showLoading = showLoading
         )
     }
 }
@@ -116,6 +119,7 @@ fun AccountScreenContent(
 private fun Content(
     state: State<AccountScreenState>,
     paddingValues: PaddingValues,
+    showLoading: MutableState<Boolean>,
     topPadding: PaddingValues,
     viewModel: AccountScreenViewModel,
     scope: CoroutineScope,
@@ -138,7 +142,7 @@ private fun Content(
         )
     }
 
-    if (state.value.isLoading) {
+    if (showLoading.value) {
         UiLoadingOverlay(
             text = stringResource(R.string.my_workout),
             paddingValues = PaddingValues(
