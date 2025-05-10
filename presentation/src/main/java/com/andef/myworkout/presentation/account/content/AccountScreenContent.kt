@@ -240,7 +240,9 @@ private fun ChangeInfoDialogContent(
                 UiButton(
                     state = UiButtonState.Chooser(
                         modifier = Modifier.weight(1f),
-                        textModifier = Modifier.padding(vertical = 4.dp)
+                        textModifier = Modifier.padding(vertical = 4.dp),
+                        icon = painterResource(R.drawable.photo),
+                        contentDescription = stringResource(R.string.photo)
                     ),
                     text = stringResource(R.string.photo_choose)
                 ) {
