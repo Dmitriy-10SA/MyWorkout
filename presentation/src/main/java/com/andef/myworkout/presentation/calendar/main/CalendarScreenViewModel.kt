@@ -1,6 +1,5 @@
 package com.andef.myworkout.presentation.calendar.main
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andef.myworkout.data.ApiException
@@ -8,7 +7,6 @@ import com.andef.myworkout.domain.auth.usecases.ClearTokenUseCase
 import com.andef.myworkout.domain.auth.usecases.GetTokenUseCase
 import com.andef.myworkout.domain.workout.usecases.GetWorkoutByDateUseCase
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
