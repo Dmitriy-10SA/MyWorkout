@@ -1,5 +1,7 @@
 package com.andef.myworkout.presentation.calendar.maincontent
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,17 +13,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.andef.myworkout.R
 import com.andef.myworkout.design.calendar.state.UiCalendarState
 import com.andef.myworkout.design.calendar.ui.UiCalendar
 import com.andef.myworkout.design.error.ui.UiErrorOverlay
+import com.andef.myworkout.design.fab.state.UiFABState
+import com.andef.myworkout.design.fab.ui.UiFAB
 import com.andef.myworkout.design.loading.ui.UiLoadingOverlay
 import com.andef.myworkout.design.scaffold.ui.UiScaffold
 import com.andef.myworkout.design.snackbar.state.UiSnackBarState
 import com.andef.myworkout.design.snackbar.ui.UiSnackBarHost
 import com.andef.myworkout.presentation.calendar.main.CalendarScreenState
+import com.andef.myworkout.ui.utils.slideInUp
+import com.andef.myworkout.ui.utils.slideOutDown
 import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
 import java.time.LocalDate
 
@@ -46,6 +53,24 @@ fun CalendarScreenContent(
                     )
                 )
             )
+        },
+        floatingActionButton = {
+            AnimatedContent(
+                targetState = !state.value.isError,
+                transitionSpec = { slideInUp.togetherWith(slideOutDown) }
+            ) { state ->
+                if (state) {
+                    UiFAB(
+                        modifier = Modifier
+                            .padding(bottom = paddingValues.calculateBottomPadding()),
+                        painter = painterResource(R.drawable.add),
+                        contentDescription = stringResource(R.string.add_workout),
+                        state = UiFABState.Base
+                    ) {
+                        TODO()
+                    }
+                }
+            }
         }
     ) { topPadding ->
         UiSnackBarHost(
