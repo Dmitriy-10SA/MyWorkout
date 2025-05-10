@@ -3,4 +3,25 @@
     <string name="ui_error_overlay_text">Ошибка при запросе</string>
     <string name="ui_error_overlay_retry_button_text">Попробовать еще раз</string>
     <string name="ui_error_overlay_my_workout">MyWorkout</string>
+    <string name="monday_short">пн</string>
+    <string name="tuesday_short">вт</string>
+    <string name="wednesday_short">ср</string>
+    <string name="thursday_short">чт</string>
+    <string name="friday_short">пт</string>
+    <string name="saturday_short">сб</string>
+    <string name="sunday_short">вс</string>
+    <string name="march_short">март</string>
+    <string name="february_short">февраль</string>
+    <string name="january_short">январь</string>
+    <string name="april_short">апрель</string>
+    <string name="may_short">май</string>
+    <string name="june_short">июнь</string>
+    <string name="july_short">июль</string>
+    <string name="august_short">август</string>
+    <string name="september_short">сентябрь</string>
+    <string name="october_short">октябрь</string>
+    <string name="november_short">ноябрь</string>
+    <string name="december_short">декабрь</string>
+    <string name="year_short">г.</string>
+    <string name="calendar">Календарь</string>
 </resources>

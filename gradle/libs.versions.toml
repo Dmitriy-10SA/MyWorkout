@@ -1,5 +1,6 @@
 [versions]
 agp = "8.9.2"
+compose = "2.6.2"
 converterGson = "2.11.0"
 daggerCompiler = "2.55"
 dagger = "2.56.1"
@@ -10,19 +11,20 @@ junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 kotlinxDatetime = "0.6.2"
-lifecycleRuntimeKtx = "2.8.7"
+lifecycleRuntimeKtx = "2.9.0"
 activityCompose = "1.10.1"
-composeBom = "2025.04.01"
+composeBom = "2025.05.00"
 appcompat = "1.7.0"
 loggingInterceptor = "4.12.0"
 material = "1.12.0"
 jetbrainsKotlinJvm = "2.1.20"
-navigationCompose = "2.8.9"
+navigationCompose = "2.9.0"
 retrofit = "2.11.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+compose = { module = "com.kizitonwose.calendar:compose", version.ref = "compose" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "dagger" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "daggerCompiler" }

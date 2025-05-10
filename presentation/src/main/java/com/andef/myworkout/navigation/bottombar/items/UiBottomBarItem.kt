@@ -1,4 +1,4 @@
-package com.andef.myworkout.bottombar.items
+package com.andef.myworkout.navigation.bottombar.items
 
 import com.andef.myworkout.R
 import com.andef.myworkout.navigation.Screen

@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
-import com.andef.myworkout.bottombar.ui.UiBottomBar
+import com.andef.myworkout.navigation.bottombar.ui.UiBottomBar
 import com.andef.myworkout.design.scaffold.ui.UiScaffold
 import com.andef.myworkout.di.viewmodel.ViewModelFactory
 import com.andef.myworkout.navigation.graph.AppNavGraph
