@@ -110,7 +110,6 @@ fun UserInfoContent(
             )
         }
         item {
-            Spacer(modifier = Modifier.padding(1.dp))
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
