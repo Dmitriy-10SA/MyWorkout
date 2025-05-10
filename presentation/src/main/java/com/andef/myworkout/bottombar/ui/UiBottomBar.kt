@@ -62,7 +62,7 @@ private fun NavigationBarContent(
             )
             .border(
                 width = 1.dp,
-                color = Black.copy(alpha = 0.05f),
+                color = Black.copy(alpha = 0.08f),
                 shape = RoundedCornerShape(topEnd = 28.dp, topStart = 28.dp)
             ),
         containerColor = White,
