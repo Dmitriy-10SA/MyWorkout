@@ -52,10 +52,13 @@ fun AuthScreen(
     val showEmptyAuthScreenTemplate = remember { mutableStateOf(false) }
     val showForgotDialog = remember { mutableStateOf(false) }
 
-    CheckTokenEffect(viewModel = viewModel, navHostController = navHostController)
+    val showLoading = remember { mutableStateOf(false) }
 
-    ShowForgotPasswordEffect(
+    Effects(
+        viewModel = viewModel,
+        navHostController = navHostController,
         state = state,
+        showLoading = showLoading,
         showEmptyAuthScreenTemplate = showEmptyAuthScreenTemplate,
         showForgotDialog = showForgotDialog
     )
@@ -97,11 +100,43 @@ fun AuthScreen(
                 }
             }
         }
-        if (state.value.isLoading && !showForgotDialog.value) {
+        if (showLoading.value && !showForgotDialog.value) {
             UiLoadingOverlay(
                 text = stringResource(R.string.my_workout),
                 paddingValues = paddingValues
             )
+        }
+    }
+}
+
+@Composable
+private fun Effects(
+    viewModel: AuthScreenViewModel,
+    navHostController: NavHostController,
+    state: State<AuthScreenState>,
+    showLoading: MutableState<Boolean>,
+    showEmptyAuthScreenTemplate: MutableState<Boolean>,
+    showForgotDialog: MutableState<Boolean>
+) {
+    CheckTokenEffect(viewModel = viewModel, navHostController = navHostController)
+
+    ShowForgotPasswordEffect(
+        state = state,
+        showEmptyAuthScreenTemplate = showEmptyAuthScreenTemplate,
+        showForgotDialog = showForgotDialog
+    )
+
+    ShowLoadingEffect(state = state, showLoading = showLoading)
+}
+
+@Composable
+private fun ShowLoadingEffect(state: State<AuthScreenState>, showLoading: MutableState<Boolean>) {
+    LaunchedEffect(state.value.isLoading) {
+        if (state.value.isLoading) {
+            delay(300)
+            showLoading.value = state.value.isLoading
+        } else {
+            showLoading.value = false
         }
     }
 }
@@ -128,11 +163,11 @@ private fun ShowForgotPasswordEffect(
     LaunchedEffect(state.value.isShowForgotPassword) {
         if (state.value.isShowForgotPassword) {
             showEmptyAuthScreenTemplate.value = true
-            delay(800)
+            delay(500)
             showForgotDialog.value = true
         } else {
             showForgotDialog.value = false
-            delay(800)
+            delay(500)
             showEmptyAuthScreenTemplate.value = false
         }
     }

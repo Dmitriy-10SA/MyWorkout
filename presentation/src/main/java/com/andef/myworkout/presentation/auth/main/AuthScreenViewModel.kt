@@ -15,7 +15,6 @@ import com.andef.myworkout.domain.auth.usecases.RegisterUseCase
 import com.andef.myworkout.domain.auth.usecases.SaveTokenUseCase
 import com.andef.myworkout.ui.utils.isValidEmail
 import com.andef.myworkout.ui.utils.isValidPassword
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -66,7 +65,6 @@ class AuthScreenViewModel @Inject constructor(
         networkRequest(
             request = {
                 getTokenUseCase.invoke()?.let { token ->
-                    delay(1000)
                     checkTokenUseCase.invoke(token)
                     _state.value = _state.value.copy(isSwitchToMainScreen = true)
                     onSuccess()
