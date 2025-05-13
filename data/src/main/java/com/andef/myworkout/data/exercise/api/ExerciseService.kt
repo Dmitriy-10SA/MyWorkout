@@ -10,6 +10,7 @@ import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Headers
 import retrofit2.http.PUT
 import retrofit2.http.Query
 
@@ -47,6 +48,7 @@ interface ExerciseService {
         @Header("Authorization") token: String
     ): Response<List<ExerciseTypeDto>>
 
+    @Headers("Content-Type: application/json")
     @PUT("exercise/add")
     suspend fun addExercise(
         @Header("Authorization") token: String,

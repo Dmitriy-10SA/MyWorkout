@@ -2,8 +2,7 @@ package com.andef.myworkout.di.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.andef.myworkout.oldPresentation.calendar.main.CalendarScreenViewModel
-import com.andef.myworkout.oldPresentation.exercises.addorchange.ExerciseAddOrChangeScreenViewModel
-import com.andef.myworkout.oldPresentation.exercises.main.ExercisesScreenViewModel
+import com.andef.myworkout.presentation.exercises.addorchange.ExercisesAddOrChangeScreenViewModel
 import com.andef.myworkout.presentation.account.changeinfo.AccountChangeInfoScreenViewModel
 import com.andef.myworkout.presentation.account.main.AccountMainScreenViewModel
 import com.andef.myworkout.presentation.auth.forgotpassword.AuthForgotPasswordScreenViewModel
@@ -21,13 +20,8 @@ interface ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(ExercisesScreenViewModel::class)
-    fun bindExercisesScreenViewModel(impl: ExercisesScreenViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(ExerciseAddOrChangeScreenViewModel::class)
-    fun bindExerciseAddOrChangeScreenViewModel(impl: ExerciseAddOrChangeScreenViewModel): ViewModel
+    @ViewModelKey(ExercisesAddOrChangeScreenViewModel::class)
+    fun bindExerciseAddOrChangeScreenViewModel(impl: ExercisesAddOrChangeScreenViewModel): ViewModel
 
     @Binds
     @IntoMap

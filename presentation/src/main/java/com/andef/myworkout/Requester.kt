@@ -18,7 +18,7 @@ class Requester @Inject constructor(
     fun networkRequest(
         viewModelScope: CoroutineScope,
         beforeRequest: () -> Unit,
-        request: suspend (String) -> Unit,
+        request: suspend CoroutineScope.(String) -> Unit,
         onUnauthorized: () -> Unit,
         onError: () -> Unit,
         onFinally: () -> Unit

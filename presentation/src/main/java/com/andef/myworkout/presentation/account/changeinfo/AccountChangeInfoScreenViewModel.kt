@@ -3,6 +3,7 @@ package com.andef.myworkout.presentation.account.changeinfo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.andef.myworkout.Requester
+import com.andef.myworkout.data.ApiException
 import com.andef.myworkout.domain.account.entities.ChangeUserInfoRequest
 import com.andef.myworkout.domain.account.usecases.ChangeUserInfoUseCase
 import kotlinx.coroutines.flow.MutableStateFlow

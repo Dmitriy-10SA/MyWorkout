@@ -45,6 +45,7 @@
     <string name="exercise_description">Описание</string>
     <string name="exercise_description_hint">Введите описание</string>
     <string name="exercise_type">Тип упражнения</string>
+    <string name="group">Группа мышц</string>
     <string name="muscle">Мышца</string>
     <string name="video">Видео</string>
     <string name="name_hint">Введите имя</string>

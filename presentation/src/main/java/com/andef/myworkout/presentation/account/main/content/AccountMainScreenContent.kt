@@ -57,7 +57,7 @@ fun AccountMainScreenContent(
             )
         },
         floatingActionButton = {
-            if (!state.value.isLoading) {
+            if (!state.value.isLoading && !state.value.isError) {
                 UiFAB(
                     modifier = Modifier
                         .padding(bottom = paddingValues.calculateBottomPadding()),
