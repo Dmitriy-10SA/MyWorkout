@@ -1,7 +1,6 @@
 package com.andef.myworkout.di.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.andef.myworkout.oldPresentation.account.main.AccountScreenViewModel
 import com.andef.myworkout.oldPresentation.calendar.main.CalendarScreenViewModel
 import com.andef.myworkout.oldPresentation.exercises.addorchange.ExerciseAddOrChangeScreenViewModel
 import com.andef.myworkout.oldPresentation.exercises.main.ExercisesScreenViewModel
@@ -15,11 +14,6 @@ import dagger.multibindings.IntoMap
 
 @Module
 interface ViewModelModule {
-    @Binds
-    @IntoMap
-    @ViewModelKey(AccountScreenViewModel::class)
-    fun bindAccountScreenViewModel(impl: AccountScreenViewModel): ViewModel
-
     @Binds
     @IntoMap
     @ViewModelKey(CalendarScreenViewModel::class)
