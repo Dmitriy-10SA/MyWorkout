@@ -9,6 +9,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.andef.myworkout.presentation.auth.EmailInput
+import com.andef.myworkout.presentation.auth.NameInput
+import com.andef.myworkout.presentation.auth.PasswordInput
+import com.andef.myworkout.presentation.auth.PatronymicInput
+import com.andef.myworkout.presentation.auth.SurnameInput
 import com.andef.myworkout.presentation.auth.main.AuthMainScreenState
 import com.andef.myworkout.presentation.auth.main.AuthMainScreenViewModel
 

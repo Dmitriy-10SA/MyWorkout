@@ -60,7 +60,6 @@ class AuthMainScreenViewModel @Inject constructor(
             viewModelScope = viewModelScope,
             state = _state,
             request = {
-                error("")
                 getTokenUseCase.invoke()?.let { token ->
                     checkTokenUseCase.invoke(token)
                     _state.value = _state.value.copy(isSwitchToMainScreen = true)

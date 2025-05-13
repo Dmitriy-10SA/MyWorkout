@@ -6,6 +6,7 @@ import com.andef.myworkout.oldPresentation.auth.main.AuthScreenViewModel
 import com.andef.myworkout.oldPresentation.calendar.main.CalendarScreenViewModel
 import com.andef.myworkout.oldPresentation.exercises.addorchange.ExerciseAddOrChangeScreenViewModel
 import com.andef.myworkout.oldPresentation.exercises.main.ExercisesScreenViewModel
+import com.andef.myworkout.presentation.auth.forgotpassword.AuthForgotPasswordScreenViewModel
 import com.andef.myworkout.presentation.auth.main.AuthMainScreenViewModel
 import dagger.Binds
 import dagger.Module
@@ -42,4 +43,9 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(AuthMainScreenViewModel::class)
     fun bindAuthMainScreenViewModel(impl: AuthMainScreenViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AuthForgotPasswordScreenViewModel::class)
+    fun bindAuthForgotPasswordScreenViewModel(impl: AuthForgotPasswordScreenViewModel): ViewModel
 }

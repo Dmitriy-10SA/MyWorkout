@@ -1,10 +1,9 @@
 package com.andef.myworkout
 
-import androidx.compose.runtime.MutableState
-import androidx.lifecycle.viewModelScope
 import com.andef.myworkout.data.ApiException
 import com.andef.myworkout.domain.auth.usecases.ClearTokenUseCase
 import com.andef.myworkout.domain.auth.usecases.GetTokenUseCase
+import com.andef.myworkout.presentation.auth.forgotpassword.AuthForgotPasswordScreenState
 import com.andef.myworkout.presentation.auth.main.AuthMainScreenState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -92,6 +91,42 @@ class Requester @Inject constructor(
                 if (isCheckToken) {
                     state.value = state.value.copy(isCheckTokenLoading = false)
                 }
+            }
+        }
+    }
+
+    fun networkRequest(
+        viewModelScope: CoroutineScope,
+        state: MutableStateFlow<AuthForgotPasswordScreenState>,
+        request: suspend () -> Unit,
+        onError: () -> Unit = {},
+        unauthorizedTextResId: Int = R.string.unknown_error,
+        serverErrorTextResId: Int = R.string.unknown_error
+    ) {
+        viewModelScope.launch {
+            try {
+                state.value = state.value.copy(
+                    isLoading = true,
+                    isError = false,
+                    errorMsgResId = null
+                )
+                request()
+            } catch (e: ApiException) {
+                val errorMsgResId = when (e) {
+                    ApiException.Unauthorized -> unauthorizedTextResId
+                    ApiException.ServerError -> serverErrorTextResId
+                    else -> R.string.unknown_network_error
+                }
+                state.value = state.value.copy(isError = true, errorMsgResId = errorMsgResId)
+                onError()
+            } catch (_: Exception) {
+                state.value = state.value.copy(
+                    isError = true,
+                    errorMsgResId = R.string.unknown_network_error
+                )
+                onError()
+            } finally {
+                state.value = state.value.copy(isLoading = false)
             }
         }
     }

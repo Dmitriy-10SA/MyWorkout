@@ -15,6 +15,8 @@ import com.andef.myworkout.R
 import com.andef.myworkout.design.button.state.UiButtonState
 import com.andef.myworkout.design.button.ui.UiButton
 import com.andef.myworkout.navigation.Screen
+import com.andef.myworkout.presentation.auth.EmailInput
+import com.andef.myworkout.presentation.auth.PasswordInput
 import com.andef.myworkout.presentation.auth.main.AuthMainScreenState
 import com.andef.myworkout.presentation.auth.main.AuthMainScreenViewModel
 

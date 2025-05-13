@@ -20,7 +20,7 @@
     <string name="error_account_photo_load">Ошибка! Попробуйте другое фото!</string>
     <string name="account_description">Значок аккаунта</string>
     <string name="login">Войти</string>
-    <string name="login_button">Вход</string>
+    <string name="login_button">Войти</string>
     <string name="sign_up">Регистрация</string>
     <string name="sign_up_button">Зарегистрироваться</string>
     <string name="server_error">Ошибка на сервере, извините!</string>

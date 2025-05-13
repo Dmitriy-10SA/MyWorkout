@@ -1,4 +1,4 @@
-package com.andef.myworkout.presentation.auth.main.content
+package com.andef.myworkout.presentation.auth
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
@@ -15,6 +15,9 @@ import com.andef.myworkout.R
 import com.andef.myworkout.design.iconbutton.ui.UiIconButton
 import com.andef.myworkout.design.input.state.UiInputState
 import com.andef.myworkout.design.input.ui.UiInput
+import com.andef.myworkout.presentation.auth.forgotpassword.AuthForgotPasswordScreenIntent
+import com.andef.myworkout.presentation.auth.forgotpassword.AuthForgotPasswordScreenState
+import com.andef.myworkout.presentation.auth.forgotpassword.AuthForgotPasswordScreenViewModel
 import com.andef.myworkout.presentation.auth.main.AuthMainScreenIntent
 import com.andef.myworkout.presentation.auth.main.AuthMainScreenState
 import com.andef.myworkout.presentation.auth.main.AuthMainScreenViewModel
@@ -134,6 +137,66 @@ fun PatronymicInput(viewModel: AuthMainScreenViewModel, state: State<AuthMainScr
         placeholderText = stringResource(R.string.patronymic_hint),
         upText = stringResource(R.string.patronymic),
         isError = !state.value.patronymic.isNotEmpty() && allFieldsNotEmpty(state)
+    )
+}
+
+@Composable
+fun EmailInput(
+    viewModel: AuthForgotPasswordScreenViewModel,
+    state: State<AuthForgotPasswordScreenState>
+) {
+    UiInput(
+        modifier = Modifier.fillMaxWidth(),
+        state = UiInputState.Base,
+        value = state.value.email,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Email,
+            imeAction = ImeAction.Next
+        ),
+        onValueChange = {
+            viewModel.send(AuthForgotPasswordScreenIntent.EmailInput(email = it.trim()))
+        },
+        placeholderText = stringResource(R.string.email_hint),
+        upText = stringResource(R.string.email)
+    )
+}
+
+@Composable
+fun PasswordInput(
+    viewModel: AuthForgotPasswordScreenViewModel,
+    state: State<AuthForgotPasswordScreenState>,
+    keyboardOptions: KeyboardOptions
+) {
+    UiInput(
+        modifier = Modifier.fillMaxWidth(),
+        state = UiInputState.Base,
+        value = state.value.password,
+        onValueChange = {
+            viewModel.send(AuthForgotPasswordScreenIntent.PasswordInput(password = it.trim()))
+        },
+        visualTransformation = if (state.value.isPasswordVisible) {
+            VisualTransformation.None
+        } else {
+            PasswordVisualTransformation()
+        },
+        trailingIcon = {
+            UiIconButton(
+                painter = if (state.value.isPasswordVisible) {
+                    painterResource(R.drawable.visibility)
+                } else {
+                    painterResource(R.drawable.visibility_off)
+                },
+                contentDescription = if (state.value.isPasswordVisible) {
+                    stringResource(R.string.show_password)
+                } else {
+                    stringResource(R.string.not_show_password)
+                },
+                onClick = { viewModel.send(AuthForgotPasswordScreenIntent.PasswordVisibleChange) }
+            )
+        },
+        keyboardOptions = keyboardOptions,
+        placeholderText = stringResource(R.string.password_hint),
+        upText = stringResource(R.string.password)
     )
 }
 
