@@ -36,6 +36,7 @@
     <string name="show_password">Показать пароль</string>
     <string name="not_show_password">Скрыть пароль</string>
     <string name="change_password_dialog_title">Смена пароля</string>
+    <string name="change_user_info_dialog_title">Смена данных</string>
     <string name="surname">Фамилия</string>
     <string name="surname_hint">Введите фамилию</string>
     <string name="name">Имя</string>

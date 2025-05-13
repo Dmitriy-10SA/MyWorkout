@@ -1,4 +1,4 @@
-package com.andef.myworkout.oldPresentation.account.main.content
+package com.andef.myworkout.presentation.account.main.content
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.andef.myworkout.R
 import com.andef.myworkout.domain.account.entities.UserInfo
-import com.andef.myworkout.oldPresentation.account.main.AccountScreenIntent
-import com.andef.myworkout.oldPresentation.account.main.AccountScreenViewModel
+import com.andef.myworkout.presentation.account.main.AccountMainScreenIntent
+import com.andef.myworkout.presentation.account.main.AccountMainScreenViewModel
 import com.andef.myworkout.ui.theme.Black
 import com.andef.myworkout.ui.theme.Gray
 import com.andef.myworkout.ui.utils.onUnauthorizedNavigate
@@ -45,7 +45,7 @@ import kotlinx.coroutines.launch
 fun UserInfoContent(
     paddingValues: PaddingValues,
     userInfo: UserInfo,
-    viewModel: AccountScreenViewModel,
+    viewModel: AccountMainScreenViewModel,
     scope: CoroutineScope,
     snackBarHostState: SnackbarHostState,
     navHostController: NavHostController
@@ -79,8 +79,8 @@ fun UserInfoContent(
                             context.getString(R.string.error_account_photo_load),
                             Toast.LENGTH_SHORT
                         ).show()
-                        viewModel.send(AccountScreenIntent.PhotoInput(photo = ""))
-                        viewModel.send(AccountScreenIntent.ChangeUserInfo(onUnauthorized = {
+                        viewModel.send(AccountMainScreenIntent.PhotoInput(photo = ""))
+                        viewModel.send(AccountMainScreenIntent.ChangeUserInfo(onUnauthorized = {
                             scope.launch {
                                 snackBarHostState.currentSnackbarData?.dismiss()
                                 snackBarHostState.showSnackbar(

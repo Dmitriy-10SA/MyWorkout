@@ -49,6 +49,7 @@ import com.andef.myworkout.design.topbar.ui.UiTopBar
 import com.andef.myworkout.oldPresentation.account.main.AccountScreenIntent
 import com.andef.myworkout.oldPresentation.account.main.AccountScreenState
 import com.andef.myworkout.oldPresentation.account.main.AccountScreenViewModel
+import com.andef.myworkout.presentation.account.main.content.UserInfoContent
 import com.andef.myworkout.ui.utils.onUnauthorizedNavigate
 import com.andef.myworkout.ui.utils.slideInUp
 import com.andef.myworkout.ui.utils.slideOutDown
@@ -132,17 +133,17 @@ private fun Content(
     val context = LocalContext.current
 
     state.value.userInfo?.let { userInfo ->
-        UserInfoContent(
-            paddingValues = PaddingValues(
-                bottom = paddingValues.calculateBottomPadding(),
-                top = topPadding.calculateTopPadding()
-            ),
-            userInfo = userInfo,
-            viewModel = viewModel,
-            scope = scope,
-            navHostController = navHostController,
-            snackBarHostState = snackBarHostState
-        )
+//        UserInfoContent(
+//            paddingValues = PaddingValues(
+//                bottom = paddingValues.calculateBottomPadding(),
+//                top = topPadding.calculateTopPadding()
+//            ),
+//            userInfo = userInfo,
+//            viewModel = viewModel,
+//            scope = scope,
+//            navHostController = navHostController,
+//            snackBarHostState = snackBarHostState
+//        )
     }
 
     if (showLoading.value) {

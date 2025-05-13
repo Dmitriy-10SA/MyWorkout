@@ -1,5 +1,7 @@
 package com.andef.myworkout.navigation
 
+import android.net.Uri
+
 sealed class Screen(val route: String) {
     data object AuthScreen : Screen(AUTH_SCREEN_ROUTE) {
         data object MainScreen : Screen(AUTH_MAIN_SCREEN_ROUTE)
@@ -8,7 +10,25 @@ sealed class Screen(val route: String) {
 
     data object AccountScreen : Screen(ACCOUNT_SCREEN_ROUTE) {
         data object MainScreen : Screen(ACCOUNT_MAIN_SCREEN_ROUTE)
-        data object ChangeInfoScreen : Screen(ACCOUNT_CHANGE_INFO_SCREEN_ROUTE)
+        data object ChangeInfoScreen : Screen(ACCOUNT_CHANGE_INFO_SCREEN_ROUTE +
+                "/{$SURNAME}/{$NAME}/{$PATRONYMIC}/{$PHOTO}") {
+            fun passParams(
+                surname: String,
+                name: String,
+                patronymic: String,
+                photo: String
+            ): String {
+                return "$ACCOUNT_CHANGE_INFO_SCREEN_ROUTE/${
+                    Uri.encode(surname)
+                }/${
+                    Uri.encode(name)
+                }/${
+                    Uri.encode(patronymic)
+                }/${
+                    Uri.encode(photo)
+                }"
+            }
+        }
     }
 
     data object ExercisesScreen : Screen(EXERCISES_SCREEN_ROUTE) {
@@ -41,5 +61,9 @@ sealed class Screen(val route: String) {
         private const val CALENDAR_MAIN_SCREEN_ROUTE = "calendar_main"
 
         const val IS_ADD = "is_add"
+        const val SURNAME = "surname"
+        const val NAME = "name"
+        const val PATRONYMIC = "patronymic"
+        const val PHOTO = "photo"
     }
 }

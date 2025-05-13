@@ -26,7 +26,12 @@ class Requester @Inject constructor(
         return viewModelScope.launch {
             try {
                 beforeRequest()
-                getTokenUseCase.invoke()?.let { token -> request(token) }
+                getTokenUseCase.invoke()?.let {
+                    token -> request(token)
+                } ?: {
+                    clearTokenUseCase.invoke()
+                    throw ApiException.Unauthorized
+                }
             } catch (e: ApiException) {
                 when (e) {
                     ApiException.Unauthorized -> {
