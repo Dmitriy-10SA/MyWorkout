@@ -31,7 +31,6 @@ import com.andef.myworkout.design.White
 import com.andef.myworkout.design.calendar.state.UiCalendarState
 import com.kizitonwose.calendar.compose.WeekCalendar
 import com.kizitonwose.calendar.compose.weekcalendar.WeekCalendarState
-import com.kizitonwose.calendar.compose.weekcalendar.rememberWeekCalendarState
 import com.kizitonwose.calendar.core.WeekDay
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -40,15 +39,9 @@ import java.time.LocalDate
 fun UiCalendar(currentSelectedDate: MutableState<LocalDate>, state: UiCalendarState) {
     when (state) {
         is UiCalendarState.WeekTop -> {
-            val calendarState = rememberWeekCalendarState(
-                startDate = LocalDate.now().minusMonths(2),
-                endDate = LocalDate.now().plusMonths(4),
-                firstVisibleWeekDate = LocalDate.now()
-            )
-
             UiWeekCalendar(
                 topPadding = state.topPadding,
-                calendarState = calendarState,
+                calendarState = state.calendarState,
                 currentSelectedDate = currentSelectedDate
             )
         }

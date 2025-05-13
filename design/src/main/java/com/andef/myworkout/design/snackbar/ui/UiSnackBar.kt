@@ -11,6 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.andef.myworkout.design.Blue
+import com.andef.myworkout.design.Red
 import com.andef.myworkout.design.snackbar.state.UiSnackBarState
 
 @Composable
@@ -20,8 +22,8 @@ fun UiSnackBarHost(
     state: UiSnackBarState
 ) {
     val containerColor = when (state) {
-        UiSnackBarState.Error -> Color(0xFFD2082B)
-        UiSnackBarState.Usual -> Color(0xFF1565C0)
+        UiSnackBarState.Error -> Red
+        UiSnackBarState.Usual -> Blue
     }
 
     SnackbarHost(hostState = snackBarHostState) { data ->

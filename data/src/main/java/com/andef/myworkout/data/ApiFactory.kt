@@ -8,6 +8,7 @@ import com.andef.myworkout.data.account.api.AccountService
 import com.andef.myworkout.data.auth.api.AuthService
 import com.andef.myworkout.data.exercise.api.ExerciseService
 import com.andef.myworkout.data.workout.api.WorkoutService
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -25,7 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory
  * @see WorkoutService
  */
 object ApiFactory {
-    private const val BASE_URL = "http://192.168.1.177:8080/"
+    private const val BASE_URL = "http://192.168.0.13:8080/"
     private val interceptor = HttpLoggingInterceptor().apply {
         setLevel(HttpLoggingInterceptor.Level.BODY)
     }
@@ -34,7 +35,7 @@ object ApiFactory {
         .build()
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
+        .addConverterFactory(GsonConverterFactory.create(GsonBuilder().serializeNulls().create()))
         .client(client)
         .build()
 

@@ -5,9 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
-import com.andef.myworkout.navigation.bottombar.ui.UiBottomBar
 import com.andef.myworkout.design.scaffold.ui.UiScaffold
-import com.andef.myworkout.di.viewmodel.ViewModelFactory
+import com.andef.myworkout.navigation.bottombar.ui.UiBottomBar
 import com.andef.myworkout.navigation.graph.AppNavGraph
 import com.andef.myworkout.ui.theme.MyWorkoutTheme
 import javax.inject.Inject
@@ -29,7 +28,9 @@ class MainActivity : ComponentActivity() {
 
             MyWorkoutTheme {
                 UiScaffold(
-                    bottomBar = { UiBottomBar(navHostController = navHostController) }
+                    bottomBar = {
+                        UiBottomBar(navHostController = navHostController)
+                    }
                 ) { paddingValues ->
                     AppNavGraph(
                         paddingValues = paddingValues,

@@ -4,11 +4,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import com.andef.myworkout.di.viewmodel.ViewModelFactory
+import com.andef.myworkout.ViewModelFactory
 import com.andef.myworkout.navigation.Screen
-import com.andef.myworkout.presentation.account.main.AccountScreen
-import com.andef.myworkout.presentation.auth.main.AuthScreen
 
 @Composable
 fun AppNavGraph(
@@ -20,13 +17,11 @@ fun AppNavGraph(
         navController = navHostController,
         startDestination = Screen.AuthScreen.route
     ) {
-        composable(route = Screen.AuthScreen.route) {
-            AuthScreen(
-                viewModelFactory = viewModelFactory,
-                paddingValues = paddingValues,
-                navHostController = navHostController
-            )
-        }
+        authNavGraph(
+            paddingValues = paddingValues,
+            navHostController = navHostController,
+            viewModelFactory = viewModelFactory
+        )
         calendarNavGraph(
             paddingValues = paddingValues,
             navHostController = navHostController,
@@ -37,12 +32,10 @@ fun AppNavGraph(
             navHostController = navHostController,
             viewModelFactory = viewModelFactory
         )
-        composable(route = Screen.AccountScreen.route) {
-            AccountScreen(
-                viewModelFactory = viewModelFactory,
-                paddingValues = paddingValues,
-                navHostController = navHostController
-            )
-        }
+        accountNavGraph(
+            paddingValues = paddingValues,
+            navHostController = navHostController,
+            viewModelFactory = viewModelFactory
+        )
     }
 }

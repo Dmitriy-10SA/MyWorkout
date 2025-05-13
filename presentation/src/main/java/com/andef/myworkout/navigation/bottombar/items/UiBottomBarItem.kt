@@ -24,7 +24,7 @@ sealed class UiBottomBarItem(
     )
 
     data object Account : UiBottomBarItem(
-        route = Screen.AccountScreen.route,
+        route = Screen.AccountScreen.MainScreen.route,
         iconResId = R.drawable.account,
         titleResId = R.string.account,
         contentDescriptionResId = R.string.account

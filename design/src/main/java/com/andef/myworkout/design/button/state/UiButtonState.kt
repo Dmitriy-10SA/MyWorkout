@@ -17,5 +17,11 @@ sealed class UiButtonState {
         val icon: Painter,
         val contentDescription: String
     ) : UiButtonState()
+
     data object ForgotPassword : UiButtonState()
+    data class OutlinedBase(
+        val modifier: Modifier = Modifier,
+        val textModifier: Modifier = Modifier,
+        val enabled: Boolean = true
+    ) : UiButtonState()
 }
