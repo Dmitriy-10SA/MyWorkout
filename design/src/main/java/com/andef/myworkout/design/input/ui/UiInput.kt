@@ -12,6 +12,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.andef.myworkout.design.Black
 import com.andef.myworkout.design.DarkGray
+import com.andef.myworkout.design.Red
 import com.andef.myworkout.design.White
 import com.andef.myworkout.design.input.state.UiInputState
 
@@ -25,7 +26,8 @@ fun UiInput(
     trailingIcon: (@Composable () -> Unit)? = null,
     placeholderText: String,
     upText: String,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    isError: Boolean = false
 ) {
     when (state) {
         UiInputState.Base -> {
@@ -37,7 +39,8 @@ fun UiInput(
                 trailingIcon = trailingIcon,
                 placeholderText = placeholderText,
                 upText = upText,
-                keyboardOptions = keyboardOptions
+                keyboardOptions = keyboardOptions,
+                isError = isError
             )
         }
     }
@@ -47,6 +50,7 @@ fun UiInput(
 private fun BaseInput(
     modifier: Modifier = Modifier,
     value: String,
+    isError: Boolean,
     onValueChange: (String) -> Unit,
     visualTransformation: VisualTransformation,
     trailingIcon: (@Composable () -> Unit)? = null,
@@ -55,9 +59,10 @@ private fun BaseInput(
     keyboardOptions: KeyboardOptions
 ) {
     Column {
-        Text(text = upText, color = DarkGray)
+        Text(text = upText, color = if (isError) Red else DarkGray)
         OutlinedTextField(
             keyboardOptions = keyboardOptions,
+            isError = isError,
             modifier = modifier,
             shape = RoundedCornerShape(10.dp),
             value = value,
@@ -82,6 +87,13 @@ fun textFieldColors() = TextFieldDefaults.colors(
     focusedContainerColor = White,
     disabledContainerColor = White,
     unfocusedContainerColor = White,
+    errorTextColor = Black,
+    errorSupportingTextColor = Red,
+    errorCursorColor = Red,
+    errorIndicatorColor = Red,
+    errorTrailingIconColor = Red,
+    errorLeadingIconColor = Red,
+    errorPlaceholderColor = Red,
     errorContainerColor = White,
     focusedIndicatorColor = Black,
     disabledIndicatorColor = Black,

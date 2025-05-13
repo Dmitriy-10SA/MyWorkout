@@ -112,7 +112,7 @@ private fun isNeedToShowBottomBar(currentDestination: NavDestination?): Boolean 
     return currentDestination?.route in listOf(
         Screen.CalendarScreen.MainScreen.route,
         Screen.ExercisesScreen.MainScreen.route,
-        Screen.AccountScreen.route
+        Screen.AccountScreen.MainScreen.route
     )
 }
 

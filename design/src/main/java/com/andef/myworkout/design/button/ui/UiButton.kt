@@ -49,6 +49,16 @@ fun UiButton(state: UiButtonState, text: String, onClick: () -> Unit) {
                 contentDescription = state.contentDescription
             )
         }
+
+        is UiButtonState.OutlinedBase -> {
+            OutlinedBaseButton (
+                modifier = state.modifier,
+                textModifier = state.textModifier,
+                enabled = state.enabled,
+                text = text,
+                onClick = onClick
+            )
+        }
     }
 }
 
@@ -114,5 +124,33 @@ private fun BaseButton(
         shape = RoundedCornerShape(10.dp)
     ) {
         Text(modifier = textModifier, text = text, color = White, fontSize = 16.sp)
+    }
+}
+
+@Composable
+private fun OutlinedBaseButton(
+    modifier: Modifier = Modifier,
+    textModifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    text: String,
+    onClick: () -> Unit
+) {
+    Button (
+        modifier = modifier,
+        onClick = onClick,
+        enabled = enabled,
+        border = BorderStroke(
+            width = 1.dp,
+            color = Black
+        ),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = White,
+            contentColor = Black,
+            disabledContentColor = Black,
+            disabledContainerColor = White.copy(alpha = 0.35f)
+        ),
+        shape = RoundedCornerShape(10.dp)
+    ) {
+        Text(modifier = textModifier, text = text, color = Black, fontSize = 16.sp)
     }
 }

@@ -17,10 +17,15 @@ import com.andef.myworkout.design.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UiTopBar(title: String, actions: @Composable RowScope.() -> Unit = {}) {
+fun UiTopBar(
+    title: String,
+    actions: @Composable RowScope.() -> Unit = {},
+    navigationIcon: @Composable () -> Unit = {}
+) {
     CenterAlignedTopAppBar(
         title = { Text(text = title, color = Black, fontSize = 24.sp) },
         colors = topAppBarColors(),
+        navigationIcon = navigationIcon,
         modifier = Modifier
             .shadow(
                 elevation = 8.dp,
